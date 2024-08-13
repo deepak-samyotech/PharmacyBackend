@@ -32,6 +32,8 @@ const userLogin = require("./MVCR/routes/adminlogin/authLogin");
 const authRoute = require("./MVCR/routes/adminlogin/common");
 // const changePassword = require("./MVCR/routes/adminlogin/");
 
+const posRouter = require("./MVCR/routes/pos");
+
 //return
 const purchaseReturnRouter = require("./MVCR/routes/purchase_return");
 const salesReturnRouter = require("./MVCR/routes/sale_return");
@@ -68,6 +70,7 @@ server.use("/employee", employeeRouter.router);
 server.use("/setting", settingRouter.router);
 server.use("/closing", closingRouter.router);
 server.use("/manage_invoice", invoiceRouter.router);
+server.use("/pos", posRouter.router);
 //ledgers
 server.use("/customer_ledger", customer_ledgerRouter.router);
 server.use("/supplier_ledger", supplier_ledgerRouter.router);

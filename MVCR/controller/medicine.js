@@ -54,6 +54,7 @@ exports.get = async (req, res) => {
             discount: item.discount,
             sale_qty: item.sale_qty,
             image: `${process.env.IMAGE_BASE_URL}${item.image}`,
+            posStatus: item.posStatus
           };
         })
       );

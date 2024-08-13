@@ -101,6 +101,10 @@ const medicineSchema = new Schema({
     type: String,
     default: null,
   },
+  posStatus: {
+    type: Boolean,
+    default:false
+  }
 });
 
 exports.Medicine = mongoose.model("Medicine", medicineSchema);
