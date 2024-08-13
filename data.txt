@@ -1,0 +1,27 @@
+{
+    "title": "Add New user",
+    "first_name": "virat",
+  "last_name": "Kohli",
+  "dob": "1990-06-01",
+  "phone_num": 365635,
+  "email": "vk@gmail.com",
+  "gender": "male",
+  "address": "delhi",
+    "alternate_phone": 9876543210,
+    "additional_email": "vk21@gmail.com",
+    "instagram_profile": {
+      "data": "Buffer",
+      "contentType": "https://images.unsplash.com/photo-1628563694622-5a76957fd09c?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    "twitter_Profile": "https://twitter.com/narendramodi?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",
+   "pfr_contact_method": "Email",
+
+  "referral_source": "Social Media",
+    "referral_contact_name": "Aditya Jain",
+    "referral_relation": "Friend",
+
+  "market_communication": "Facebook",
+  "language": "English & HIndi both"
+}
+
+============================================================================================================== 
