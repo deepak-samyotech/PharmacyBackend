@@ -5,12 +5,16 @@ const posConfigureSchema = new mongoose.Schema({
     productId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Medicine",
-        required:true
+        required: true
     },
     value: {
         type: String,
-        default: null
+        default: null,
+    },
+    active: {
+        type: Boolean,
+        default: true
     }
-}, {timestamps:true})
+}, { timestamps: true })
 
 exports.PosConfigureData = mongoose.model("PosConfigureData", posConfigureSchema);
