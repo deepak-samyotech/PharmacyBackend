@@ -2,6 +2,8 @@ const medicineModel = require("../models/medicine");
 const Medicine = medicineModel.Medicine;
 const supplierModel = require("../models/supplier.js");
 const Supplier = supplierModel.Supplier;
+const model = require("../models/posConfigure");
+const PosConfigureData = model.PosConfigureData;
 
 const mongoose = require("mongoose");
 const fs = require("fs");
@@ -255,6 +257,28 @@ exports.post = async (req, res) => {
 
 exports.search = async (req, res) => {
   try {
+    // const { barcode, product_id } = req.query;
+
+    // let query = {};
+
+    // if (barcode) {
+    //   query.barcode = barcode;
+    // }
+
+    // if (product_id) {
+    //   query.product_id = product_id;
+    // }
+
+    // // const medicines = await Medicine.find(query).select('product_name');
+    // const medicines = await Medicine.find(query).select('product_id supplier_id supplier_name batch_no product_name generic_name strength form box_size trade_price mrp barcode box_price product_details side_effect expire_date instock w_discount favourite date discount sale_qty');
+
+    // console.log(medicines);
+
+    // res.status(200).json({ medicines });
+
+    // -------------------------------------------------------
+    // console.log(req.query);
+
     const { barcode, product_id } = req.query;
 
     let query = {};
@@ -264,13 +288,16 @@ exports.search = async (req, res) => {
     }
 
     if (product_id) {
-      query.product_id = product_id;
+      query.value = product_id;
     }
 
-    // const medicines = await Medicine.find(query).select('product_name');
-    const medicines = await Medicine.find(query).select('product_id supplier_id supplier_name batch_no product_name generic_name strength form box_size trade_price mrp barcode box_price product_details side_effect expire_date instock w_discount favourite date discount sale_qty');
+    const medicine = await PosConfigureData.find({...query, active:true}).populate('productId').select('product_id supplier_id supplier_name batch_no product_name generic_name strength form box_size trade_price mrp barcode box_price product_details side_effect expire_date instock w_discount favourite date discount sale_qty');
+
+    let medicines = [medicine[0].productId]
+    // console.log(medicines);
 
     res.status(200).json({ medicines });
+
   } catch (err) {
     res.status(500).json({
       message: err.message,
