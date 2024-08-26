@@ -58,7 +58,7 @@ mongoose
 
 //body parser
 server.use(cors());
-server.use(express.urlencoded({extended:true}));
+server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
 server.use(express.static("public"));
 // server.use("/employee", employeeRouter.router);
@@ -100,5 +100,5 @@ server.use("/purchase-history", purchaseHistoryRouter.router)
 server.use("/bank", bankRouter.router)
 
 server.listen(PORT, () => {
-  console.log("server started");
+  console.log("server started" + PORT);
 });

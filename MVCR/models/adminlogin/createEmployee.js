@@ -13,13 +13,17 @@ const createEmployeeSchema = new Schema({
     type: String,
     default: null,
   },
-  firstName: {
+  // firstName: {
+  //   type: String,
+  //   default: null,
+  // },
+  // lastName: {
+  //   type: String,
+  //   default: null,
+  // },
+  name: {
     type: String,
-    default: null,
-  },
-  lastName: {
-    type: String,
-    default: null,
+    default: null
   },
   email: {
     type: String,
@@ -80,8 +84,9 @@ const validate = (data) => {
   };
 
   const schema = Joi.object({
-    firstName: Joi.string().required().label("First Name"),
-    lastName: Joi.string().required().label("Last Name"),
+    // firstName: Joi.string().required().label("First Name"),
+    // lastName: Joi.string().required().label("Last Name"),
+    name: Joi.string().required().label("name"),
     email: Joi.string().email().required().label("Email"),
     password: Joi.string()
       .required()

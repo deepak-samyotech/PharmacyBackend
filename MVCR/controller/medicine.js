@@ -51,7 +51,7 @@ exports.get = async (req, res) => {
             side_effect: item.side_effect,
             expire_date: item.expire_date,
             instock: item.instock,
-            w_discount: item.w_discount,  
+            w_discount: item.w_discount,
             favourite: item.favourite,
             discount: item.discount,
             sale_qty: item.sale_qty,
@@ -183,8 +183,8 @@ exports.post = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-       // Generate custom product ID with prefix "med" and 5-digit number
-       const product_id = generateProductId();
+    // Generate custom product ID with prefix "med" and 5-digit number
+    const product_id = generateProductId();
 
     // Extract data from the request body
     const {
@@ -291,7 +291,7 @@ exports.search = async (req, res) => {
       query.value = product_id;
     }
 
-    const medicine = await PosConfigureData.find({...query, active:true}).populate('productId').select('product_id supplier_id supplier_name batch_no product_name generic_name strength form box_size trade_price mrp barcode box_price product_details side_effect expire_date instock w_discount favourite date discount sale_qty');
+    const medicine = await PosConfigureData.find({ ...query, active: true }).populate('productId').select('product_id supplier_id supplier_name batch_no product_name generic_name strength form box_size trade_price mrp barcode box_price product_details side_effect expire_date instock w_discount favourite date discount sale_qty');
 
     let medicines = [medicine[0].productId]
     // console.log(medicines);
@@ -312,7 +312,7 @@ exports.put = async (req, res) => {
     req.body.file_path = "./public/upload/documents";
     req.body.file_name = "image";
     const respUpload = await uploadSingleFile(req, res);
- 
+
     console.log("respUpload", respUpload);
     if (respUpload.error !== undefined) {
       return res.status(400).json({ errors: [{ msg: respUpload.message }] });
@@ -408,3 +408,40 @@ exports.delete = async (req, res) => {
     });
   }
 };
+
+exports.updateQuantity = async (req, res) => {
+  try {
+
+    const newQuantityArr = req.body;
+
+    if (!newQuantityArr) {
+      return res.status(400).json({
+        success: false,
+        error: "Atleast one Quantity needed to update Quantity"
+      })
+    }
+
+
+
+    const values = newQuantityArr?.map( element => {
+      return Medicine.updateOne(
+        { _id: element?._id },
+        { $set: { instock: element?.ProductNewQuantity } }
+      )
+    });
+
+    await Promise.all(values);
+
+    res.status(200).json({
+      success: true,
+      message: "New Quantities updated"
+    })
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      error: "Internal server error"
+    })
+  }
+}

@@ -25,5 +25,11 @@ router.post("/", async (req, res) => {
     
 });
 
+router.post("/change-password", async (req, res) => {
+    return res.status(200).json({
+        message: "Password change functionality is not working, sorry for Inconvenience, try it later"
+    })
+})
+
 module.exports = router;
 // ==============================

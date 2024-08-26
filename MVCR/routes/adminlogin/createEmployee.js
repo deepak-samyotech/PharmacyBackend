@@ -32,8 +32,9 @@ router.get("/", async (req, res) => {
         const data = employeeLists.map((item) => ({
           id:item._id,
           em_id: item.em_id,
-          firstName: item.firstName,
-          lastName: item.lastName,
+          // firstName: item.firstName,
+          // lastName: item.lastName,
+          name: item.name,
           email: item.email,
           contact: item.contact,
           role: item.role,
@@ -92,8 +93,9 @@ router.post("/", upload.single('image'), async (req, res) => {
         const createEmployee = new CreateEmployee({
             em_id: em_id,
             em_ip: em_ip,
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
+            // firstName: req.body.firstName,
+          // lastName: req.body.lastName,
+            name: req.body.name,
             email: req.body.email,
             password: hashedPassword,
             contact: req.body.contact,

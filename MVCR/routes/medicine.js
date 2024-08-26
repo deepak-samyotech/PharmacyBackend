@@ -6,11 +6,12 @@ const router = express.Router();
 const upload = multer(); // Initialize multer
 
 router
-  .post("/", medicineController.post) 
+  .post("/", medicineController.post)
   .get("/", medicineController.get)
   .get("/s-data/:data", medicineController.getSupplierData)
   .get("/bySupplierName", medicineController.getBySupplierName)
   .get('/search', medicineController.search)
+  .put("/updateQuantity", medicineController.updateQuantity)
   .put("/:id", medicineController.put)
   .delete("/:id", medicineController.delete)
 

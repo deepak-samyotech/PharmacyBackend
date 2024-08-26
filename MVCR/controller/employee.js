@@ -152,8 +152,9 @@ exports.put = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
     const {
-      firstName,
-      lastName,
+      // firstName,
+      // lastName,
+      name,
       email,
       password,
       contact,
@@ -167,8 +168,9 @@ exports.put = async (req, res) => {
     console.log("req.params == ", req.params.id);
 
     const updatedData = {
-      firstName,
-      lastName,
+      // firstName,
+      // lastName,
+      name,
       email,
       password,
       contact,
