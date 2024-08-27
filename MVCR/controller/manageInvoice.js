@@ -150,6 +150,31 @@ exports.getTotalSale = async (req, res) => {
   }
 };
 
+// get invoice by id
+exports.getInvoice = async (req, res) => {
+  try {
+    const invoiceId = req.params.id;
+
+    const invoiceData = await Manage_Invoice.findById(invoiceId);
+
+    if (!invoiceData) {
+      return res.status(404).json({
+        success: false,
+        error:"Invalid invoice Id"
+      })
+    }
+
+    res.status(200).json({
+      success: true,
+      invoiceData,
+      message:"Invoice data fetched successfully"
+    })
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 //(2.) POST : to create a new data on database
 exports.post = async (req, res) => {
   try {

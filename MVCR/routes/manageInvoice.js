@@ -7,6 +7,7 @@ router
     .get('/', manageInvoiceController.get)
     .get('/todaySale', manageInvoiceController.getTodaySale)
     .get('/totalSale', manageInvoiceController.getTotalSale)
+    .get('/:id', manageInvoiceController.getInvoice)
     .put('/:id', manageInvoiceController.put)
     .delete('/:id', manageInvoiceController.delete);
 
