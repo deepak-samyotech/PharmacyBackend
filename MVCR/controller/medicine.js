@@ -346,6 +346,7 @@ exports.put = async (req, res) => {
       side_effect,
       expire_date,
       instock,
+      short_stock,
       w_discount,
       favourite,
       discount,
@@ -371,6 +372,7 @@ exports.put = async (req, res) => {
       side_effect,
       expire_date,
       instock,
+      short_stock,
       w_discount,
       favourite,
       discount,
@@ -426,7 +428,7 @@ exports.updateQuantity = async (req, res) => {
 
 
 
-    const values = newQuantityArr?.map( element => {
+    const values = newQuantityArr?.map(element => {
       return Medicine.updateOne(
         { _id: element?._id },
         { $set: { instock: element?.ProductNewQuantity } }
