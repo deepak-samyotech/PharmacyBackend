@@ -32,6 +32,10 @@ const manage_invoiceSchema = new Schema({
   },
   medicineData: [
     {
+      medicine_id: {
+        type: String,
+        default:null,
+      },
       medicine: {
         type: String,
         default: null,
@@ -42,33 +46,37 @@ const manage_invoiceSchema = new Schema({
       },
       qty: {
         type: String,
-        default: null,
+        default: '0',
+      },
+      prevReturnQty: {
+        type: String,
+        default: '0'
       },
       discount: {
         type: String,
-        default: null,
+        default: '0',
       },
       medMrp: {
         type: String,
-        default: null,
+        default: '0',
       },
       product_total: {
         type: String,
-        default: null,
+        default: '0',
       },
     },
   ],
   grand_total: {
     type: String,
-    default: null,
+    default: '0',
   },
   total_paid: {
     type: String,
-    default: null,
+    default: '0',
   },
   total_due: {
     type: String,
-    default: null,
+    default: '0',
   },
 });
 

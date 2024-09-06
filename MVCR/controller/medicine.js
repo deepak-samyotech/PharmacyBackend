@@ -428,11 +428,30 @@ exports.updateQuantity = async (req, res) => {
 
 
 
-    const values = newQuantityArr?.map(element => {
-      return Medicine.updateOne(
-        { _id: element?._id },
-        { $set: { instock: element?.ProductNewQuantity } }
-      )
+    const values = newQuantityArr.map(async (element) => {
+      try {
+        const curr_medicine = await Medicine.findById(element?._id);
+
+        if (!curr_medicine) {
+          throw new Error(`Medicine with id ${element?._id} not found`);
+        }
+
+        const SoldQuantity = curr_medicine?.instock - element?.ProductNewQuantity;
+
+        const newSaleQuantity = (curr_medicine?.sale_qty || 0) + SoldQuantity;
+
+        return await Medicine.updateOne(
+          { _id: element?._id },
+          {
+            $set: {
+              instock: element?.ProductNewQuantity,
+              sale_qty: newSaleQuantity,
+            },
+          }
+        );
+      } catch (error) {
+        console.error(`Failed to update medicine with id ${element?._id}:`, error);
+      }
     });
 
     await Promise.all(values);
@@ -450,3 +469,60 @@ exports.updateQuantity = async (req, res) => {
     })
   }
 }
+
+exports.updateQuantityAfterReturn = async (medicineData) => {
+  try {
+    if (!medicineData || medicineData.length === 0) {
+      console.log("At least one medicine needed to update Quantity");
+      return {
+        success: false,
+        error: "At least one medicine needed to update Quantity",
+      };
+    }
+
+
+    const values = medicineData.map(async (element) => {
+      try {
+        const curr_medicine = await Medicine.findById(element?.medicine_id).select('_id instock sale_qty');
+
+        if (!curr_medicine) {
+          return {
+            success: false,
+            error:`Medicine not found during update after return with id ${element?.medicine_id}` 
+          }
+        }
+
+        const currStock = parseInt(curr_medicine?.instock);
+        
+        const returnQty = parseInt(element?.returnQty);
+
+        const updatedStock = currStock + returnQty;
+
+
+        return await Medicine.updateOne(
+          { _id: curr_medicine?._id },
+          {
+            $set: {
+              instock: updatedStock,
+            },
+          }
+        );
+      } catch (error) {
+        console.error(`Failed to update medicine with id ${element?._id}:`, error);
+      }
+    });
+
+    await Promise.all(values);
+
+    return {
+      success: true,
+      message: "New Quantities updated",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: `Failed to update medicine : ${error}`,
+    };
+  }
+};
+

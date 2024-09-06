@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const Sale_ReturnSchema = new Schema({
+  invoiceObjectId:{type: String, default:null},
   customerName: { type: String, default: null },
   sale_id: { type: String, default: null },
   invoiceNumber: { type: String, default: null },
@@ -10,6 +11,7 @@ const Sale_ReturnSchema = new Schema({
   type: { type: String, default: null },
   medicineData: [
     {
+      medicine_id:{type: String, default:null},
       medicine: { type: String, default: null },
       generic: { type: String, default: null },
       saleQty: { type: String, default: null },

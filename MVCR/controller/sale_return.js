@@ -9,6 +9,8 @@ const {
 } = require("../../utils/upload.js");
 const { validationResult } = require("express-validator");
 const multer = require("multer");
+const { updateQuantityAfterReturn } = require("./medicine.js");
+const { updateReturnQuantities } = require("./manageInvoice.js");
 const upload = multer();
 
 // // Function to generate custom employment ID
@@ -65,7 +67,7 @@ exports.post = async (req, res) => {
     req.body.file_path = "./public/upload/documents";
     req.body.file_name = "image";
     const respUpload = await uploadSingleFile(req, res);
-    console.log("respUpload", respUpload);
+    // console.log("respUpload", respUpload);
     if (respUpload.error !== undefined) {
       return res.status(400).json({ errors: [{ msg: respUpload.message }] });
     }
@@ -79,7 +81,7 @@ exports.post = async (req, res) => {
     const returnDate = new Date().toISOString().split("T")[0];
 
     // Extract data from the request body
-    const {
+    let {
       id,
       sale_id,
       invoiceNumber,
@@ -94,9 +96,19 @@ exports.post = async (req, res) => {
       totalReturn,
     } = req.body;
 
+
+    console.log("Req body ==============- ", req.body);
+
+     medicineData = medicineData.map(item => ({
+      ...item,
+      returnQty: item.returnQty || '0',
+      deduction: item.deduction || '0',
+      total: item.total || '0'
+    }));
+
     // Create the new Sale_return
     let newSale_return = new Sale_return({
-      id,
+      invoiceObjectId:id,
       sale_id,
       returnDate,
       invoiceNumber,
@@ -113,7 +125,23 @@ exports.post = async (req, res) => {
 
     // Save the new Sale_return to the database
     newSale_return = await newSale_return.save();
-    console.log("newSale_return", newSale_return);
+    // console.log("newSale_return", newSale_return);
+
+
+    const result1 = await updateQuantityAfterReturn(newSale_return?.medicineData);
+    if (result1?.success) {
+      console.log("Product also updated : ", result1?.message);
+    } else {
+      console.log("Error while updating medicine data : ", result1?.error);
+    }
+
+    const result2 = await updateReturnQuantities(id, medicineData);
+    if (result2?.success) {
+      console.log("Prev Return Quantity also updated : ", result2?.message);
+    } else {
+      console.log("Error while updating Prev Return Quantity medicine data : ", result2?.error);
+    }
+
     res.status(200).json({ newSale_return: newSale_return });
   } catch (err) {
     res.status(500).json({

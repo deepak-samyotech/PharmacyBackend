@@ -98,12 +98,12 @@ const medicineSchema = new Schema({
     default: "Yes",
   },
   sale_qty: {
-    type: String,
-    default: null,
+    type: Number,
+    default: 0,
   },
   posStatus: {
     type: Boolean,
-    default:false
+    default: false
   }
 });
 

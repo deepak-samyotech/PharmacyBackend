@@ -88,14 +88,14 @@ exports.post = async (req, res) => {
 // 3). : PUT API
 exports.put = async (req, res) => {
   try {
-    req.body.file_path = "./public/upload/documents";
-    req.body.file_name = "image";
-    const respUpload = await uploadSingleFile(req, res);
+    // req.body.file_path = "./public/upload/documents";
+    // req.body.file_name = "image";
+    // const respUpload = await uploadSingleFile(req, res);
 
-    console.log("respUpload", respUpload);
-    if (respUpload.error !== undefined) {
-      return res.status(400).json({ errors: [{ msg: respUpload.message }] });
-    }
+    // console.log("respUpload", respUpload);
+    // if (respUpload.error !== undefined) {
+    //   return res.status(400).json({ errors: [{ msg: respUpload.message }] });
+    // }
 
     // Validation check
     const errors = validationResult(req);
@@ -103,9 +103,11 @@ exports.put = async (req, res) => {
       await removeUploadImage(respUpload.files);
       return res.status(400).json({ errors: errors.array() });
     }
+
+    console.log("req.body  ", req.body);
     const {
-      id,
-      customer_id,
+      // id,
+      // customer_id,
       customer_name,
       total_balance,
       total_paid,
@@ -113,23 +115,29 @@ exports.put = async (req, res) => {
     } = req.body;
 
     const updatedData = {
-      id,
-      customer_id,
+      // id,
+      // customer_id,
       customer_name,
       total_balance,
       total_paid,
       total_due,
     };
+
+    console.log("Updated data", updatedData);
+
     const updatedCustomer_ledger = await Customer_ledger.findByIdAndUpdate(
       req.params.id,
       updatedData,
       { new: true }
     );
-    console.log("updatedCustomer_ledger", updatedCustomer_ledger);
-    res.status(200).json({ updatedCustomer_ledger: updatedCustomer_ledger });
+
     if (!updatedCustomer_ledger) {
       return res.status(404).json({ message: "Customer_ledger not found" });
     }
+
+    console.log("updatedCustomer_ledger", updatedCustomer_ledger);
+    res.status(200).json({ updatedCustomer_ledger: updatedCustomer_ledger });
+    
 
     // res.json(updatedCustomer_ledger);
   } catch (error) {

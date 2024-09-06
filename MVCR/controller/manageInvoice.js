@@ -37,7 +37,7 @@ exports.get = async (req, res) => {
           return {
             id: item.id,
             invoiceId: item.invoiceId,
-            sale_id:item.sale_id,
+            sale_id: item.sale_id,
             customer_id: item.customer_id,
             customerName: item.customerName,
             contact: item.contact,
@@ -68,38 +68,38 @@ exports.get = async (req, res) => {
 
 // (1.1) find the current date data
 exports.getTodaySale = async (req, res) => {
-    try {
-      const currentDate = new Date();
-      const currentDateString = currentDate.toISOString().split('T')[0]; // Get current date string in YYYY-MM-DD format
-      
-      const manage_InvoiceLists = await Manage_Invoice.find({
-        createDate: { $gte: currentDateString, $lt: new Date(currentDate.getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0] }
-      });
-  
-      if (manage_InvoiceLists && manage_InvoiceLists.length > 0) {
-        const data = manage_InvoiceLists.map((item) => ({
-          id: item.id,
-          createDate: currentDateString, // Keep the same date format
-          invoiceId: item.invoiceId,
-          customerName: item.customerName,
-          grand_total: item.grand_total,
-        }));
-  
-        res.status(200).json({
-          msg: "data",
-          data: data,
-        });
-        return;
-      }
+  try {
+    const currentDate = new Date();
+    const currentDateString = currentDate.toISOString().split('T')[0]; // Get current date string in YYYY-MM-DD format
+
+    const manage_InvoiceLists = await Manage_Invoice.find({
+      createDate: { $gte: currentDateString, $lt: new Date(currentDate.getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0] }
+    });
+
+    if (manage_InvoiceLists && manage_InvoiceLists.length > 0) {
+      const data = manage_InvoiceLists.map((item) => ({
+        id: item.id,
+        createDate: currentDateString, // Keep the same date format
+        invoiceId: item.invoiceId,
+        customerName: item.customerName,
+        grand_total: item.grand_total,
+      }));
+
       res.status(200).json({
-        message: "No data found for today's date.",
-        data: [],
-        count: 0,
+        msg: "data",
+        data: data,
       });
-    } catch (err) {
-      res.status(404).json(err);
+      return;
     }
-  };
+    res.status(200).json({
+      message: "No data found for today's date.",
+      data: [],
+      count: 0,
+    });
+  } catch (err) {
+    res.status(404).json(err);
+  }
+};
 
 //1.2  gettin overall sale data
 exports.getTotalSale = async (req, res) => {
@@ -107,7 +107,7 @@ exports.getTotalSale = async (req, res) => {
 
     const startDate = req.query.startDate;
     const endDate = req.query.endDate;
-    
+
     let query = {};
 
     // Filter by date range if start and end dates are provided
@@ -160,14 +160,14 @@ exports.getInvoice = async (req, res) => {
     if (!invoiceData) {
       return res.status(404).json({
         success: false,
-        error:"Invalid invoice Id"
+        error: "Invalid invoice Id"
       })
     }
 
     res.status(200).json({
       success: true,
       invoiceData,
-      message:"Invoice data fetched successfully"
+      message: "Invoice data fetched successfully"
     })
   } catch (error) {
     console.log(error);
@@ -319,3 +319,58 @@ exports.delete = async (req, res) => {
     });
   }
 };
+
+
+exports.updateReturnQuantities = async (invoiceId, medicineData) => {
+  try {
+    const result = await Manage_Invoice.findById(invoiceId);
+
+    if (!result) {
+      return {
+        success: false,
+        error: "Document not found",
+      };
+    }
+
+    // Update individual returnQty values
+    const values = medicineData.map(async (medicine) => {
+      try {
+        const medicineInDoc = result.medicineData.find(m => m.medicine_id.toString() === medicine.medicine_id);
+        if (medicineInDoc) {
+          const currentReturnQty = parseInt(medicineInDoc.prevReturnQty) || 0;
+          const newReturnQty = parseInt(medicine.returnQty) || 0;
+          const updatedReturnQty = currentReturnQty + newReturnQty;
+
+          return await Manage_Invoice.findOneAndUpdate(
+            {
+              _id: invoiceId,
+              'medicineData.medicine_id': medicine.medicine_id
+            },
+            {
+              $set: {
+                'medicineData.$.prevReturnQty': updatedReturnQty.toString()
+              }
+            },
+            { new: true }
+          );
+        }
+      } catch (error) {
+        console.error(`Failed to update medicine return Quantity`, error);
+      }
+    });
+
+    await Promise.all(values);
+
+    return {
+      success: true,
+      message: "New Quantities updated",
+    };
+
+  } catch (error) {
+    console.error('Error updating document:', error);
+    return {
+      success: true,
+      error: `Error updating document: ${error}`,
+    };
+  }
+}
