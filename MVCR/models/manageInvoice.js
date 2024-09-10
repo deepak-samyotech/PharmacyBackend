@@ -78,6 +78,10 @@ const manage_invoiceSchema = new Schema({
     type: String,
     default: '0',
   },
+  company_id: {
+    type: Schema.Types.ObjectId,
+    ref:"User"
+  }
 });
 
 exports.Manage_Invoice = mongoose.model("Manage_Invoice", manage_invoiceSchema);

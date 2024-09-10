@@ -23,6 +23,10 @@ const supplier_ledgerSchema = new Schema({
         type: String,
         default: null,
     },
+    company_id: {
+        type: Schema.Types.ObjectId,
+        ref:"User"
+    }
 });
 
 exports.Supplier_ledger = mongoose.model("Supplier_ledger", supplier_ledgerSchema);

@@ -22,6 +22,10 @@ const customer_ledgerSchema = new Schema({
         type: String,
         default: null,
     },
+    company_id: {
+        type: Schema.Types.ObjectId,
+        ref:"User"
+      }
 });
 
 exports.Customer_ledger = mongoose.model('Customer_ledger', customer_ledgerSchema);

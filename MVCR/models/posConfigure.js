@@ -1,5 +1,6 @@
 
 const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
 const posConfigureSchema = new mongoose.Schema({
     productId: {
@@ -14,6 +15,10 @@ const posConfigureSchema = new mongoose.Schema({
     active: {
         type: Boolean,
         default: true
+    },
+    company_id: {
+        type: Schema.Types.ObjectId,
+        ref:"User"
     }
 }, { timestamps: true })
 

@@ -24,6 +24,10 @@ const bankSchema = new Schema({
   },
   image: {
     type: String,
+  },
+  company_id: {
+    type: Schema.Types.ObjectId,
+    ref:"User"
   }
 });
 

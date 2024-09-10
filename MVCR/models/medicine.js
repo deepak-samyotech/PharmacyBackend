@@ -104,6 +104,10 @@ const medicineSchema = new Schema({
   posStatus: {
     type: Boolean,
     default: false
+  },
+  company_id: {
+    type: Schema.Types.ObjectId,
+    ref:"User"
   }
 });
 

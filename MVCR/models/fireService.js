@@ -19,6 +19,10 @@ const fireServiceSchema = new Schema({
     type: String,
     default: null,
   },
+  company_id: {
+    type: Schema.Types.ObjectId,
+    ref:"User"
+  }
 });
 
 exports.FireService = mongoose.model("FireService", fireServiceSchema);

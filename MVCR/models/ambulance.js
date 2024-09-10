@@ -27,6 +27,10 @@ const ambulanceSchema = new Schema({
     type: String,
     default: null,
   },
+  company_id: {
+    type: Schema.Types.ObjectId,
+    ref:"User"
+  }
 });
 
 exports.Ambulance = mongoose.model("Ambulance", ambulanceSchema);

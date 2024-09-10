@@ -9,7 +9,11 @@ const ClosingSchema = new Schema({
     cash_in_hand:  {type:String},
     closing_balance:  {type:String},
     adjustment:  {type:String},
-    entry_id:  {type:String},
+    entry_id: { type: String },
+    company_id: {
+        type: Schema.Types.ObjectId,
+        ref:"User"
+      }
 });
 
 exports.Closing = mongoose.model("Closing", ClosingSchema);

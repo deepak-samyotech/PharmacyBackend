@@ -45,6 +45,10 @@ const settingSchema = new Schema({
     default: null,
     trim: true,
   },
+  company_id: {
+    type: Schema.Types.ObjectId,
+    ref:"User"
+}
 });
 
 exports.Setting = mongoose.model("Setting", settingSchema);

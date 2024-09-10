@@ -58,6 +58,10 @@ const customerSchema = new Schema({
     type: String,
     default: null,
   },
+  company_id: {
+    type: Schema.Types.ObjectId,
+    ref:"User"
+  }
 });
 
 exports.Customer = mongoose.model('Customer', customerSchema);

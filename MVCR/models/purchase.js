@@ -43,6 +43,10 @@ const purchaseSchema = new Schema({
         type: String,
         default: null,
     },
+    company_id: {
+        type: Schema.Types.ObjectId,
+        ref:"User"
+    }
 });
 
 exports.Purchase = mongoose.model("Purchase", purchaseSchema);

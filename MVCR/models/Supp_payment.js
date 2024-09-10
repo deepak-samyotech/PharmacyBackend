@@ -42,6 +42,10 @@ const supp_paymentSchema = new Schema({
         type: String,
         default: null,
     },
+    company_id: {
+        type: Schema.Types.ObjectId,
+        ref:"User"
+    }
 });
 
 exports.Supp_payment = mongoose.model("Supp_payment",supp_paymentSchema);

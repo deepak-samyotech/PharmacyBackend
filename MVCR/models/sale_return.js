@@ -24,6 +24,10 @@ const Sale_ReturnSchema = new Schema({
   grandTotal: { type: String, default: null },
   grandDeduction: { type: String, default: null },
   totalReturn: { type: String, default: null },
+  company_id: {
+    type: Schema.Types.ObjectId,
+    ref:"User"
+  }
 });
 
 exports.Sale_Return = mongoose.model("Sale_Return", Sale_ReturnSchema);

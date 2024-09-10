@@ -41,6 +41,10 @@ const supplierSchema = new Schema({
         default: "Inactive",
     },
     s_details: coreSchema,
+    company_id: {
+        type: Schema.Types.ObjectId,
+        ref:"User"
+    }
 }, {timestamps:true});
 
 exports.Supplier = mongoose.model("Supplier", supplierSchema);

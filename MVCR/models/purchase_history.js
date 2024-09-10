@@ -47,6 +47,10 @@ const PurchaseHistorySchema = new Schema({
   barcode: {
     type: String,
   },
+  company_id: {
+    type: Schema.Types.ObjectId,
+    ref:"User"
+  }
 });
 
 exports.PurchaseHistory = mongoose.model("PurchaseHistory", PurchaseHistorySchema);

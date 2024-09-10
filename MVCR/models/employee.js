@@ -50,6 +50,10 @@ const employeeSchema = new Schema({
     enum: ["ACTIVE", "INACTIVE"],
     default: "INACTIVE",
   },
+  company_id: {
+    type: Schema.Types.ObjectId,
+    ref:"User"
+  }
 });
 
 exports.Employee = mongoose.model("Employee", employeeSchema);

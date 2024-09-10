@@ -10,7 +10,11 @@ const PurchaseReturnSchema = new Schema({
   invoice_no:  String,
   return_date:  String,
   total_deduction:  String,
-  total_amount: String
+  total_amount: String,
+  company_id: {
+    type: Schema.Types.ObjectId,
+    ref:"User"
+}
 });
 
 exports.PurchaseReturn = mongoose.model("PurchaseReturn", PurchaseReturnSchema);

@@ -19,6 +19,10 @@ const policeSchema = new Schema({
     type: String,
     default: null,
   },
+  company_id: {
+    type: Schema.Types.ObjectId,
+    ref:"User"
+  }
 });
 
 exports.Police = mongoose.model("Police", policeSchema);
