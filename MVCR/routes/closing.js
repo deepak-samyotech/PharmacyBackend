@@ -1,13 +1,14 @@
 const express = require("express");
 const closingController = require("../controller/closing");
 const multer = require("multer");
+const verifyJWT = require("../controller/auth/auth.middleware");
 const router = express.Router();
 
 // Multer configuration for handling file uploads
-const upload = multer({ dest: 'uploads/' }); // Define the destination directory for uploaded files
+const upload = multer({ dest: 'uploads/' }); 
 
 router
-    .post("/", closingController.post) // Use upload.single() to handle single file upload
+    .post("/", verifyJWT, closingController.post) 
     .get("/", closingController.get)
     .put("/:id", closingController.put)
     .delete("/:id", closingController.delete);

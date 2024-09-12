@@ -61,6 +61,10 @@ const createEmployeeSchema = new Schema({
     enum: ["ACTIVE", "INACTIVE"],
     default: "INACTIVE",
   },
+  company_id: {
+    type: Schema.Types.ObjectId,
+    ref:"User"
+  }
 });
 
 createEmployeeSchema.methods.generateAuthToken = function () {

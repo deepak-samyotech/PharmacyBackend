@@ -81,6 +81,7 @@ exports.post = async (req, res) => {
       email,
       contact,
       address,
+      company_id: req?.user?._id,
     });
 
     // Save the new FireService to the database

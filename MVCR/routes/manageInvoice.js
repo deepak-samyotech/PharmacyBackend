@@ -1,9 +1,10 @@
+const verifyJWT = require('../controller/auth/auth.middleware');
 const manageInvoiceController = require('../controller/manageInvoice');
 const express = require('express');
 const router = express.Router();
 
 router
-    .post('/', manageInvoiceController.post)
+    .post('/', verifyJWT, manageInvoiceController.post)
     .get('/', manageInvoiceController.get)
     .get('/todaySale', manageInvoiceController.getTodaySale)
     .get('/totalSale', manageInvoiceController.getTotalSale)

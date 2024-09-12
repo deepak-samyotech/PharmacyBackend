@@ -6,7 +6,7 @@ const router = express.Router();
 
 
 router
-  .post("/", customerController.post) // Use upload.single() to handle single file upload
+  .post("/", verifyJWT, customerController.post) // Use upload.single() to handle single file upload
   .get("/", verifyJWT,customerController.get)
   .put("/:id", customerController.put)
   .delete("/:id", customerController.delete)

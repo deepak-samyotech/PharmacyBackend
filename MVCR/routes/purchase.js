@@ -1,10 +1,11 @@
 const express = require('express');
 const purchaseController = require('../controller/purchase');
+const verifyJWT = require('../controller/auth/auth.middleware');
 
 const router = express.Router();
 
 router
-    .post('/', purchaseController.post)
+    .post('/', verifyJWT, purchaseController.post)
     .get('/', purchaseController.get)
     .get('/todayPurchase', purchaseController.getTodayPurchase)
     .get('/purchaseBilling', purchaseController.getPurchaseBilling)

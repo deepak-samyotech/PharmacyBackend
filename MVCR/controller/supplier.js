@@ -153,10 +153,11 @@ exports.post = async (req, res) => {
         respUpload.files && respUpload.files.length > 0
           ? respUpload.files[0].filename
           : "",
-      s_details: {
-        created_by: 'user123', 
-        updated_by: 'user123',
-      },
+      // s_details: {
+      //   created_by: 'user123',
+      //   updated_by: 'user123',
+      // },
+      company_id: req.user?._id,
     });
 
     // Save the new supplier to the database

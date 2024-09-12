@@ -40,7 +40,7 @@ exports.get = async (req, res) => {
       );
 
       // Count total number of Banks
-    //   const totalBanks = BankLists.length;
+      //   const totalBanks = BankLists.length;
 
       res.status(200).json({
         msg: "data",
@@ -53,8 +53,8 @@ exports.get = async (req, res) => {
     res.status(200).json({
       message: "Bank List",
       data: BankLists,
-    //   count: BankLists.length,
-    //   totalBanks: 0, // If no Banks found, return count as 0
+      //   count: BankLists.length,
+      //   totalBanks: 0, // If no Banks found, return count as 0
     });
   } catch (err) {
     res.status(404).json(err);
@@ -80,8 +80,8 @@ exports.post = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-       // Generate custom product ID with prefix "med" and 5-digit number
-       const bank_id = generateBankId();
+    // Generate custom product ID with prefix "med" and 5-digit number
+    const bank_id = generateBankId();
 
     // Extract data from the request body
     const {
@@ -95,16 +95,17 @@ exports.post = async (req, res) => {
     console.log("req.body", req.body);
     // Create the new customer
     let newBank = new Bank({
-        id,
-        bank_id,
-        bank_name,
-        account_name,
-        account_number,
-        branch,
+      id,
+      bank_id,
+      bank_name,
+      account_name,
+      account_number,
+      branch,
       image:
         respUpload.files && respUpload.files.length > 0
           ? respUpload.files[0].filename
           : "",
+      company_id: req.user?._id,
     });
     console.log("newBank", newBank);
     // Save the new customer to the database
@@ -137,21 +138,21 @@ exports.put = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
     const {
-        id,
-        bank_id,
-        bank_name,
-        account_name,
-        account_number,
-        branch,
+      id,
+      bank_id,
+      bank_name,
+      account_name,
+      account_number,
+      branch,
     } = req.body;
 
     const updatedData = {
-        id,
-        bank_id,
-        bank_name,
-        account_name,
-        account_number,
-        branch,
+      id,
+      bank_id,
+      bank_name,
+      account_name,
+      account_number,
+      branch,
       image:
         respUpload.files && respUpload.files.length > 0
           ? respUpload.files[0].filename

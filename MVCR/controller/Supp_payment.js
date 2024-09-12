@@ -89,17 +89,18 @@ exports.post = async (req, res) => {
     console.log("req.body", req.body);
     // Create the new Supp_payment
     let newSupp_payment = new Supp_payment({
-        id,
-        supp_id,
-        pur_id,
-        type,
-        bank_id,
-        cheque_no,
-        issue_date,
-        receiver_name,
-        receiver_contact,
-        paid_amount,
-        date,
+      id,
+      supp_id,
+      pur_id,
+      type,
+      bank_id,
+      cheque_no,
+      issue_date,
+      receiver_name,
+      receiver_contact,
+      paid_amount,
+      date,
+      company_id: req.user?._id,
     });
 
     // Save the new Supp_payment to the database
@@ -132,31 +133,31 @@ exports.put = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
     const {
-        id,
-        supp_id,
-        pur_id,
-        type,
-        bank_id,
-        cheque_no,
-        issue_date,
-        receiver_name,
-        receiver_contact,
-        paid_amount,
-        date,
+      id,
+      supp_id,
+      pur_id,
+      type,
+      bank_id,
+      cheque_no,
+      issue_date,
+      receiver_name,
+      receiver_contact,
+      paid_amount,
+      date,
     } = req.body;
 
     const updatedData = {
-        id,
-        supp_id,
-        pur_id,
-        type,
-        bank_id,
-        cheque_no,
-        issue_date,
-        receiver_name,
-        receiver_contact,
-        paid_amount,
-        date,
+      id,
+      supp_id,
+      pur_id,
+      type,
+      bank_id,
+      cheque_no,
+      issue_date,
+      receiver_name,
+      receiver_contact,
+      paid_amount,
+      date,
     };
 
     const updatedSupp_payment = await Supp_payment.findByIdAndUpdate(

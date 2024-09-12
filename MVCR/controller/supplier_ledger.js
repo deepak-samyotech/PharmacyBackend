@@ -77,6 +77,7 @@ exports.post = async (req, res) => {
       total_amount,
       total_paid,
       total_due,
+      company_id:req.user?._id,
     });
 
     // Save the new Supplier_ledger to the database

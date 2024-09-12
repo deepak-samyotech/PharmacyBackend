@@ -72,6 +72,7 @@ exports.post = async (req, res) => {
       total_balance,
       total_paid,
       total_due,
+      company_id:req.user?._id,
     });
     console.log("newCustomer_ledger", newCustomer_ledger);
     // Save the new Customer_ledger to the database

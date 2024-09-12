@@ -92,6 +92,7 @@ exports.post = async (req, res) => {
       closing_balance,
       adjustment,
       entry_id,
+      company_id: req.user?._id,
     });
     console.log(" Create the new Closing", newClosing)
 

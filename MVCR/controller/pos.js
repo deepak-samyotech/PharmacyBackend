@@ -52,7 +52,8 @@ exports.post = async (req, res) => {
 
         const response = await PosConfigureData.create({
             productId,
-            value
+            value,
+            company_id:req?.user?._id,
         });
 
         console.log("response ", response);

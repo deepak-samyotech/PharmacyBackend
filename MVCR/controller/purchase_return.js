@@ -105,7 +105,8 @@ exports.post = async (req, res) => {
         pur_id,
         return_date,
         total_deduction,
-        total_amount
+      total_amount,
+        company_id:req.user?._id,
     });
      console.log(newPurchaseReturn,"harshit++++s")
     // Save the new PurchaseReturn to the database

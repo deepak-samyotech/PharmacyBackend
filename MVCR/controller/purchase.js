@@ -300,6 +300,7 @@ exports.post = async (req, res) => {
       gtotal_amount,
       entry_date,
       entry_id,
+      company_id:req.user?._id,
     });
     console.log(newPurchase, "harshit++++s");
     newPurchase = await newPurchase.save();

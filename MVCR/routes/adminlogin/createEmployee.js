@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const multer = require("multer");
 const { uploadSingleFile, removeUploadImage } = require("../../../utils/upload");
 const { validationResult } = require("express-validator");
+const verifyJWT = require("../../controller/auth/auth.middleware");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -58,7 +59,7 @@ router.get("/", async (req, res) => {
   });
 
 
-router.post("/", upload.single('image'), async (req, res) => {
+router.post("/", upload.single('image'), verifyJWT, async (req, res) => {
     try {
         console.log("req.body : ", req.body);
         console.log("req.file : ", req.file);
@@ -78,7 +79,7 @@ router.post("/", upload.single('image'), async (req, res) => {
         // Check if a user with the given email already exists
         const existingUser = await CreateEmployee.findOne({ email: req.body.email });
         if (existingUser) {
-            return res.status(409).send({ message: "Employee with given email already exists" });
+            return res.status(402).json({ message: "Employee with given email already exists" });
         }
 
         // Generate a salt and hash the password
@@ -105,6 +106,7 @@ router.post("/", upload.single('image'), async (req, res) => {
             role: req.body.role,
             status: req.body.status,
             image: req.body.image,
+            company_id: req.user?._id,
         });
 
         // Save the user to the database

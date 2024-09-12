@@ -225,6 +225,7 @@ exports.post = async (req, res) => {
       grand_total,
       total_paid,
       total_due,
+      company_id:req.user?._id,
     });
 
     // Save the new Manage_Invoice to the database

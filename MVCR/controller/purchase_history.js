@@ -116,6 +116,7 @@ exports.post = async (req, res) => {
       mrp,
       total_amount,
       barcode,
+      company_id:req.user?._id,
     });
     console.log(newPurchaseHistory, "dj++++s");
     // Save the new Purchase to the database

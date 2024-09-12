@@ -243,6 +243,7 @@ exports.post = async (req, res) => {
         respUpload.files && respUpload.files.length > 0
           ? respUpload.files[0].filename
           : "",
+      company_id: req.user?._id,
     });
     console.log("newMedicine", newMedicine);
     // Save the new customer to the database
