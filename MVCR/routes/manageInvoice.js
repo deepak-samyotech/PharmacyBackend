@@ -3,8 +3,10 @@ const manageInvoiceController = require('../controller/manageInvoice');
 const express = require('express');
 const router = express.Router();
 
+router.use(verifyJWT);
+
 router
-    .post('/', verifyJWT, manageInvoiceController.post)
+    .post('/', manageInvoiceController.post)
     .get('/', manageInvoiceController.get)
     .get('/todaySale', manageInvoiceController.getTodaySale)
     .get('/totalSale', manageInvoiceController.getTotalSale)

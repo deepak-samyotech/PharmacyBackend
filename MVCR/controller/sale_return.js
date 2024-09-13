@@ -24,7 +24,7 @@ const upload = multer();
 //  (1.) GET : to find the Sale_return
 exports.get = async (req, res) => {
   try {
-    const Sale_returnLists = await Sale_return.find();
+    const Sale_returnLists = await Sale_return.find({ company_id: req.user?._id });
 
     if (Sale_returnLists && Sale_returnLists.length > 0) {
       const data = await Promise.all(
@@ -99,7 +99,7 @@ exports.post = async (req, res) => {
 
     console.log("Req body ==============- ", req.body);
 
-     medicineData = medicineData.map(item => ({
+    medicineData = medicineData.map(item => ({
       ...item,
       returnQty: item.returnQty || '0',
       deduction: item.deduction || '0',
@@ -108,7 +108,7 @@ exports.post = async (req, res) => {
 
     // Create the new Sale_return
     let newSale_return = new Sale_return({
-      invoiceObjectId:id,
+      invoiceObjectId: id,
       sale_id,
       returnDate,
       invoiceNumber,

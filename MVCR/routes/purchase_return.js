@@ -4,8 +4,10 @@ const verifyJWT = require('../controller/auth/auth.middleware');
 
 const router = express.Router();
 
+router.use(verifyJWT);
+
 router
-    .post('/', verifyJWT, purchaseReturnController.post)
+    .post('/', purchaseReturnController.post)
     .get('/', purchaseReturnController.get)
     .put('/:id', purchaseReturnController.put)
     .delete('/:id', purchaseReturnController.delete);

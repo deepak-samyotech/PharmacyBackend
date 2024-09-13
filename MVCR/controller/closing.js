@@ -15,7 +15,7 @@ const {
 exports.get = async (req, res) => {
   try {
     // Fetch data from Closing collection
-    const ClosingLists = await Closing.find();
+    const ClosingLists = await Closing.find({company_id:req.user?._id});
 
     if (ClosingLists && ClosingLists.length > 0) {
       // Prepare response data

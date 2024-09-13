@@ -23,7 +23,7 @@ const generateCustomerId = () => {
 //  (1.) GET : to find the Customer
 exports.get = async (req, res) => {
   try {
-    const customerLists = await Customer.find();
+    const customerLists = await Customer.find({ company_id: req.user?._id });
 
     if (customerLists && customerLists.length > 0) {
       let wholesaleCount = 0;
@@ -290,7 +290,7 @@ exports.search = async (req, res) => {
     }
 
     // const medicines = await Medicine.find(query).select('product_name');
-    const customer = await Customer.find(query).select(
+    const customer = await Customer.find( {company_id:req.user?._id ,query}).select(
       "c_id c_name pharmacy_name c_email c_type barcode cus_contact c_address c_note regular_discount target_amount target_discount entry_date"
     );
 

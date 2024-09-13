@@ -7,8 +7,10 @@ const router = express.Router();
 // Multer configuration for handling file uploads
 const upload = multer({ dest: 'uploads/' }); // Define the destination directory for uploaded files
 
+router.use(verifyJWT);
+
 router
-    .post("/", verifyJWT, supplier_ledgerController.post) // Use upload.single() to handle single file upload
+    .post("/", supplier_ledgerController.post) // Use upload.single() to handle single file upload
     .get("/", supplier_ledgerController.get)
     .put("/:id", supplier_ledgerController.put)
     .delete("/:id", supplier_ledgerController.delete);

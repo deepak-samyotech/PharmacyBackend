@@ -15,7 +15,7 @@ const { validationResult } = require("express-validator");
 exports.get = async (req, res) => {
   try {
     // Fetch data from Doctor collection
-    const DoctorLists = await Doctor.find();
+    const DoctorLists = await Doctor.find({ company_id: req.user?._id });
 
     if (DoctorLists && DoctorLists.length > 0) {
       // Prepare response data

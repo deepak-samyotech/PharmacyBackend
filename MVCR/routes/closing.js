@@ -7,8 +7,10 @@ const router = express.Router();
 // Multer configuration for handling file uploads
 const upload = multer({ dest: 'uploads/' }); 
 
+router.use(verifyJWT);
+
 router
-    .post("/", verifyJWT, closingController.post) 
+    .post("/", closingController.post) 
     .get("/", closingController.get)
     .put("/:id", closingController.put)
     .delete("/:id", closingController.delete);

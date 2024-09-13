@@ -4,8 +4,10 @@ const verifyJWT = require('../controller/auth/auth.middleware');
 
 const router = express.Router();
 
+router.use(verifyJWT);
+
 router
-    .post('/', verifyJWT, policeController.post)
+    .post('/',  policeController.post)
     .get('/', policeController.get)
     .put('/:id', policeController.put)
     .delete('/:id', policeController.delete);

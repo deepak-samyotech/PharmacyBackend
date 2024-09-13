@@ -31,7 +31,7 @@ function formatDate(date) {
 exports.get = async (req, res) => {
   try {
     // Fetch data from Employee collection
-    const employeeLists = await Employee.find();
+    const employeeLists = await Employee.find({ company_id: req.user?._id });
 
     if (employeeLists && employeeLists.length > 0) {
       // Prepare response data

@@ -7,7 +7,7 @@ const {
 
 exports.get = async (req, res) => {
   try {
-    const PurchaseHistoryLists = await PurchaseHistory.find();
+    const PurchaseHistoryLists = await PurchaseHistory.find({ company_id: req.user?._id });
     if (PurchaseHistoryLists && PurchaseHistoryLists.length > 0) {
       const data = PurchaseHistoryLists.map((item) => ({
         id: item.id,
@@ -52,7 +52,7 @@ exports.search = async (req, res) => {
       query.invoice_no = invoice_no;
     }
 
-    const PurchaseHistoryData = await PurchaseHistory.find(query).select(
+    const PurchaseHistoryData = await PurchaseHistory.find({ company_id: req.user?._id, query }).select(
       "supplier_name supplier_id invoice_no date details product_name generic_name form expire_date sale_qty trade_price mrp total_amount barcode"
     );
 
@@ -95,7 +95,7 @@ exports.post = async (req, res) => {
     } = req.body;
 
     console.log("req.body", req.body);
-    
+
     const singleSupplierId = Array.isArray(supplier_id) ? supplier_id[0] : supplier_id;
 
 
@@ -116,7 +116,7 @@ exports.post = async (req, res) => {
       mrp,
       total_amount,
       barcode,
-      company_id:req.user?._id,
+      company_id: req.user?._id,
     });
     console.log(newPurchaseHistory, "dj++++s");
     // Save the new Purchase to the database

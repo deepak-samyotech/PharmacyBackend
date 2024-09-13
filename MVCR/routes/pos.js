@@ -5,7 +5,9 @@ const verifyJWT = require("../controller/auth/auth.middleware");
 
 const router = express.Router();
 
-router.post("/set_value", verifyJWT, PosController.post)
+router.use(verifyJWT);
+
+router.post("/set_value",  PosController.post)
     .get("/", PosController.get)
     .put("/:id", PosController.put)
     .delete("/:id", PosController.delete);

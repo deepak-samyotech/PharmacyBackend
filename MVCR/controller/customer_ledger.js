@@ -14,7 +14,7 @@ const upload = multer();
 //  (1.) GET : to find the Customer_ledger
 exports.get = async (req, res) => {
   try {
-    const customer_ledgerLists = await Customer_ledger.find();
+    const customer_ledgerLists = await Customer_ledger.find({company_id:req.user?._id});
 
     if (customer_ledgerLists && customer_ledgerLists.length > 0) {
       const data = await Promise.all(

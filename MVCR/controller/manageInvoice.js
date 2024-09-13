@@ -29,7 +29,7 @@ const generateSaleId = () => {
 //  (1.) GET : to find the Manage_Invoice
 exports.get = async (req, res) => {
   try {
-    const manage_InvoiceLists = await Manage_Invoice.find();
+    const manage_InvoiceLists = await Manage_Invoice.find({ company_id: req.user?._id });
 
     if (manage_InvoiceLists && manage_InvoiceLists.length > 0) {
       const data = await Promise.all(
@@ -73,6 +73,7 @@ exports.getTodaySale = async (req, res) => {
     const currentDateString = currentDate.toISOString().split('T')[0]; // Get current date string in YYYY-MM-DD format
 
     const manage_InvoiceLists = await Manage_Invoice.find({
+      company_id: req.user?._id,
       createDate: { $gte: currentDateString, $lt: new Date(currentDate.getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0] }
     });
 
@@ -117,7 +118,7 @@ exports.getTotalSale = async (req, res) => {
         $lte: new Date(endDate),
       };
     }
-    const manage_InvoiceLists = await Manage_Invoice.find(query);
+    const manage_InvoiceLists = await Manage_Invoice.find({ company_id: req.user?._id, query });
 
     if (manage_InvoiceLists && manage_InvoiceLists.length > 0) {
       const data = await Promise.all(
@@ -225,7 +226,7 @@ exports.post = async (req, res) => {
       grand_total,
       total_paid,
       total_due,
-      company_id:req.user?._id,
+      company_id: req.user?._id,
     });
 
     // Save the new Manage_Invoice to the database

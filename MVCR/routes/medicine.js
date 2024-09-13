@@ -6,8 +6,10 @@ const verifyJWT = require("../controller/auth/auth.middleware");
 const router = express.Router();
 const upload = multer(); // Initialize multer
 
+router.use(verifyJWT);
+
 router
-  .post("/", verifyJWT,medicineController.post)
+  .post("/", medicineController.post)
   .get("/", medicineController.get)
   .get("/s-data/:data", medicineController.getSupplierData)
   .get("/bySupplierName", medicineController.getBySupplierName)

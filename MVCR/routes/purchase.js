@@ -4,8 +4,10 @@ const verifyJWT = require('../controller/auth/auth.middleware');
 
 const router = express.Router();
 
+router.use(verifyJWT);
+
 router
-    .post('/', verifyJWT, purchaseController.post)
+    .post('/', purchaseController.post)
     .get('/', purchaseController.get)
     .get('/todayPurchase', purchaseController.getTodayPurchase)
     .get('/purchaseBilling', purchaseController.getPurchaseBilling)

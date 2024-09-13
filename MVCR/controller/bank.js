@@ -22,7 +22,7 @@ const generateBankId = () => {
 //  (1.) GET : to find the Customer
 exports.get = async (req, res) => {
   try {
-    const BankLists = await Bank.find();
+    const BankLists = await Bank.find({company_id:req.user?._id});
 
     if (BankLists && BankLists.length > 0) {
       const data = await Promise.all(

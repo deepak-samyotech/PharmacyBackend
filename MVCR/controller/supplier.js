@@ -28,7 +28,7 @@ const generateSupplierId = () => {
 exports.get = async (req, res) => {
   try {
     // Fetch data from Supplier collection
-    const supplierLists = await Supplier.find();
+    const supplierLists = await Supplier.find({ company_id: req.user?._id });
 
     if (supplierLists && supplierLists.length > 0) {
       // Prepare response data

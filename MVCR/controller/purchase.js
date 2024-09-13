@@ -25,7 +25,7 @@ const generatePurchaseId = () => {
 //  (1.) GET : to find the Customer
 exports.get = async (req, res) => {
   try {
-    const purchaseLists = await Purchase.find();
+    const purchaseLists = await Purchase.find({ company_id: req.user?._id });
     if (purchaseLists && purchaseLists.length > 0) {
       const data = purchaseLists.map((item) => ({
         id: item.id,
@@ -62,6 +62,7 @@ exports.getTodayPurchase = async (req, res) => {
     const result = await Purchase.aggregate([
       {
         $match: {
+          company_id: req.user?._id,
           entry_date: currentDate,
         },
       },
@@ -177,6 +178,11 @@ exports.getPurchaseBilling = async (req, res) => {
 
     const purchaseLists = await Purchase.aggregate([
       {
+        $match: {
+          company_id: req.user?._id,
+        }
+      },
+      {
         $lookup: {
           from: "suppliers",
           localField: "sid",
@@ -204,7 +210,7 @@ exports.getPurchaseBilling = async (req, res) => {
           supplier_email: { $ifNull: ["$supplierData.s_email", ""] },
           supplier_address: { $ifNull: ["$supplierData.s_address", ""] },
           supplier_phone: { $ifNull: ["$supplierData.s_phone", ""] },
-    
+
           payment_receiver_name: { $ifNull: ["$paymentData.receiver_name", ""] },
           payment_receiver_contact: { $ifNull: ["$paymentData.receiver_contact", ""] },
           payment_paid_amount: { $ifNull: ["$paymentData.paid_amount", ""] },
@@ -234,8 +240,8 @@ exports.getPurchaseBilling = async (req, res) => {
         },
       },
     ]);
-    
-     console.log("Purchase list : ",purchaseLists);
+
+    console.log("Purchase list : ", purchaseLists);
     if (purchaseLists && purchaseLists.length > 0) {
       res.status(200).json({
         msg: "Purchase data",
@@ -300,7 +306,7 @@ exports.post = async (req, res) => {
       gtotal_amount,
       entry_date,
       entry_id,
-      company_id:req.user?._id,
+      company_id: req.user?._id,
     });
     console.log(newPurchase, "harshit++++s");
     newPurchase = await newPurchase.save();

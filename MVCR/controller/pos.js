@@ -53,7 +53,7 @@ exports.post = async (req, res) => {
         const response = await PosConfigureData.create({
             productId,
             value,
-            company_id:req?.user?._id,
+            company_id: req?.user?._id,
         });
 
         console.log("response ", response);
@@ -82,7 +82,7 @@ exports.get = async (req, res) => {
     try {
 
         const posConfigData = await PosConfigureData
-            .find()
+            .find({ company_id: req.user?._id })
             .populate({
                 path: 'productId',
                 select: 'product_name'

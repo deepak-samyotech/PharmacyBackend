@@ -17,7 +17,7 @@ const upload = multer();
 exports.get = async (req, res) => {
   try {
     // Fetch data from Supplier_ledger collection
-    const supplier_ledgerLists = await Supplier_ledger.find();
+    const supplier_ledgerLists = await Supplier_ledger.find({ company_id: req.user?._id });
 
     if (supplier_ledgerLists && supplier_ledgerLists.length > 0) {
       // Prepare response data
@@ -65,8 +65,8 @@ exports.post = async (req, res) => {
 
 
     // Extract data from the request body
-      
-      const { id,supplier_id,supplier_name, total_amount, total_paid, total_due } = req.body;
+
+    const { id, supplier_id, supplier_name, total_amount, total_paid, total_due } = req.body;
 
     console.log("req.body", req.body);
     // Create the new Supplier_ledger
@@ -77,7 +77,7 @@ exports.post = async (req, res) => {
       total_amount,
       total_paid,
       total_due,
-      company_id:req.user?._id,
+      company_id: req.user?._id,
     });
 
     // Save the new Supplier_ledger to the database
@@ -109,7 +109,7 @@ exports.put = async (req, res) => {
       await removeUploadImage(respUpload.files);
       return res.status(400).json({ errors: errors.array() });
     }
-    const { id, supplier_id,supplier_name, total_amount, total_paid, total_due } = req.body;
+    const { id, supplier_id, supplier_name, total_amount, total_paid, total_due } = req.body;
 
     const updatedData = {
       id,

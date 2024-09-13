@@ -27,7 +27,7 @@ const generateProductId = () => {
 //  (1.) GET : to find the Customer
 exports.get = async (req, res) => {
   try {
-    const medicineLists = await Medicine.find();
+    const medicineLists = await Medicine.find({ company_id: req.user?._id });
 
     if (medicineLists && medicineLists.length > 0) {
       const data = await Promise.all(
@@ -90,6 +90,11 @@ exports.getSupplierData = async (req, res) => {
     const data = req.params.data;
     const suppliers = await Supplier.aggregate([
       {
+        $match: {
+          company_id: req.user?._id,
+        }
+      },
+      {
         $project: {
           _id: 1, // include the _id field
           suppler_Id: "$s_id",
@@ -121,7 +126,10 @@ exports.getBySupplierName = async (req, res) => {
         .json({ message: "Please provide a supplier_name" });
     }
 
-    const medicineLists = await Medicine.find({ supplier_name: supplierName });
+    const medicineLists = await Medicine.find({
+      company_id: req.user?._id,
+      supplier_name: supplierName
+    });
 
     if (!medicineLists || medicineLists.length === 0) {
       return res
@@ -295,14 +303,33 @@ exports.search = async (req, res) => {
       query.value = product_id;
     }
 
-    const medicine = await PosConfigureData.find({ ...query, active: true }).populate('productId').select('product_id supplier_id supplier_name batch_no product_name generic_name strength form box_size trade_price mrp barcode box_price product_details side_effect expire_date instock w_discount favourite date discount sale_qty');
+    console.log("object ------>>>>>>", query);
+
+    const medicine = await PosConfigureData.find({
+      company_id: req.user?._id,
+      ...query,
+      active: true
+    })
+      .populate('productId')
+      .select('product_id supplier_id supplier_name batch_no product_name generic_name strength form box_size trade_price mrp barcode box_price product_details side_effect expire_date instock w_discount favourite date discount sale_qty');
+
+    console.log("medicine ", medicine);
+
+    if (medicine.length === 0) {
+      return res.status(200).json({
+        status: false
+      })
+    }
 
     let medicines = [medicine[0].productId]
     // console.log(medicines);
 
+    console.log("medicines", medicines);
+
     res.status(200).json({ medicines });
 
   } catch (err) {
+    console.log("error : ", err);
     res.status(500).json({
       message: err.message,
     });
@@ -489,12 +516,12 @@ exports.updateQuantityAfterReturn = async (medicineData) => {
         if (!curr_medicine) {
           return {
             success: false,
-            error:`Medicine not found during update after return with id ${element?.medicine_id}` 
+            error: `Medicine not found during update after return with id ${element?.medicine_id}`
           }
         }
 
         const currStock = parseInt(curr_medicine?.instock);
-        
+
         const returnQty = parseInt(element?.returnQty);
 
         const updatedStock = currStock + returnQty;

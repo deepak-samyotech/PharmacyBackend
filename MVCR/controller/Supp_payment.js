@@ -17,7 +17,7 @@ const upload = multer();
 exports.get = async (req, res) => {
   try {
     // Fetch data from Supp_payment collection
-    const Supp_paymentLists = await Supp_payment.find();
+    const Supp_paymentLists = await Supp_payment.find({ company_id: req.user?._id });
 
     if (Supp_paymentLists && Supp_paymentLists.length > 0) {
       // Prepare response data

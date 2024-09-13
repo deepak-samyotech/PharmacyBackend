@@ -4,8 +4,10 @@ const verifyJWT = require('../controller/auth/auth.middleware');
 
 const router = express.Router();
 
+router.use(verifyJWT);
+
 router
-    .post('/', verifyJWT, hospitalController.post)
+    .post('/', hospitalController.post)
     .get('/', hospitalController.get)
     .put('/:id', hospitalController.put)
     .delete('/:id', hospitalController.delete);

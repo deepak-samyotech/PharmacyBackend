@@ -15,7 +15,7 @@ const { validationResult } = require("express-validator");
 exports.get = async (req, res) => {
   try {
     // Fetch data from FireService collection
-    const FireServiceLists = await FireService.find();
+    const FireServiceLists = await FireService.find({ company_id: req.user?._id });
 
     if (FireServiceLists && FireServiceLists.length > 0) {
       // Prepare response data

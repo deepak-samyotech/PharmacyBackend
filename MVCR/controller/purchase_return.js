@@ -23,7 +23,7 @@ const generatePurchaseReturnId = () => {
 exports.get = async (req, res) => {
   try {
     // Fetch data from PurchaseReturn collection
-    const PurchaseReturnLists = await PurchaseReturn.find();
+    const PurchaseReturnLists = await PurchaseReturn.find({ company_id: req.user?._id });
 
     if (PurchaseReturnLists && PurchaseReturnLists.length > 0) {
       // Prepare response data
@@ -57,7 +57,7 @@ exports.get = async (req, res) => {
 
 
 
- 
+
 //(2.) POST : to send the data on database
 exports.post = async (req, res) => {
   try {
@@ -77,10 +77,10 @@ exports.post = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-  
+
     const r_id = generatePurchaseReturnId();
 
-       // Set entry_date to the current date
+    // Set entry_date to the current date
     const return_date = new Date().toISOString().split('T')[0];
 
     // Extract data from the request body
@@ -97,18 +97,18 @@ exports.post = async (req, res) => {
     console.log("req.body", req.body);
     // Create the new PurchaseReturn
     let newPurchaseReturn = new PurchaseReturn({
-        id,
-        r_id,
-        sid,
-        supplier_name,
-        invoice_no,
-        pur_id,
-        return_date,
-        total_deduction,
+      id,
+      r_id,
+      sid,
+      supplier_name,
+      invoice_no,
+      pur_id,
+      return_date,
+      total_deduction,
       total_amount,
-        company_id:req.user?._id,
+      company_id: req.user?._id,
     });
-     console.log(newPurchaseReturn,"harshit++++s")
+    console.log(newPurchaseReturn, "harshit++++s")
     // Save the new PurchaseReturn to the database
     newPurchaseReturn = await newPurchaseReturn.save();
     console.log("newPurchaseReturn", newPurchaseReturn);
@@ -139,23 +139,23 @@ exports.put = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
     const {
-        id,
-        r_id,
-        sid,
-        invoice_no,
-        pur_id,
-        return_date,
-        total_deduction
+      id,
+      r_id,
+      sid,
+      invoice_no,
+      pur_id,
+      return_date,
+      total_deduction
     } = req.body;
 
     const updatedData = {
-        id,
-        r_id,
-        sid,
-        invoice_no,
-        pur_id,
-        return_date,
-        total_deduction
+      id,
+      r_id,
+      sid,
+      invoice_no,
+      pur_id,
+      return_date,
+      total_deduction
     };
 
     const updatedPurchaseReturn = await PurchaseReturn.findByIdAndUpdate(

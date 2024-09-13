@@ -15,7 +15,7 @@ const { validationResult } = require("express-validator");
 exports.get = async (req, res) => {
   try {
     // Fetch data from Ambulance collection
-    const AmbulanceLists = await Ambulance.find();
+    const AmbulanceLists = await Ambulance.find({company_id:req.user?._id});
 
     if (AmbulanceLists && AmbulanceLists.length > 0) {
       // Prepare response data
