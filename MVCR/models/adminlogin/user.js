@@ -5,25 +5,25 @@ const Joi = require("joi");
 const passwordComplexity = require("joi-password-complexity");
 
 const userSchema = new Schema({
-  em_id: {
+  companyName: {
     type: String,
     default: null,
   },
-  em_ip: {
-    type: String,
-    default: null,
-  },
-  firstName: {
-    type: String,
-    default: null,
-  },
-  lastName: {
+  // lastName: {
+  //   type: String,
+  //   default: null,
+  // },
+  description: {
     type: String,
     default: null,
   },
   email: {
     type: String,
     default: null,
+  },
+  phoneNumber: {
+    type: Number,
+    default:null
   },
   password: {
     type: String,
@@ -40,7 +40,7 @@ const userSchema = new Schema({
 });
 
 userSchema.methods.generateAuthToken = function () {
-  const token = jwt.sign({ _id: this._id, role:this.role }, process.env.JWTPRIVATEKEY, {
+  const token = jwt.sign({ _id: this._id, role:this.role, active:this.active }, process.env.JWTPRIVATEKEY, {
     expiresIn: "7d",
   });
   return token;
@@ -60,12 +60,13 @@ const validate = (data) => {
   };
 
   const schema = Joi.object({
-    firstName: Joi.string().required().label("First Name"),
-    lastName: Joi.string().required().label("Last Name"),
-    email: Joi.string().email().required().label("Email"),
+    companyName: Joi.string().required().label("companyName"),
+    description: Joi.string().required().label("description"),
+    email: Joi.string().email().required().label("email"),
+    phoneNumber: Joi.number().required().label("phoneNumber"),
     password: Joi.string()
       .required()
-      .label("Password")
+      .label("password")
       .custom((value, helpers) => {
         const { error } = passwordComplexity(complexityOptions).validate(value);
         if (error) {

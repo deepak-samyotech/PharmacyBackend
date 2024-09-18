@@ -44,31 +44,26 @@ const createEmployeeSchema = new Schema({
     type: String,
     default: null,
   },
-  entrydate: {
-    type: String,
-    default: null,
-  },
   image: {
     type: String,
   },
   role: {
     type: String,
-    enum: ["SALESMAN", "ADMIN", "MANAGER"],
-    default: "SALESMAN",
+    enum: ["EMPLOYEE"],
+    default: "EMPLOYEE",
   },
-  status: {
-    type: String,
-    enum: ["ACTIVE", "INACTIVE"],
-    default: "INACTIVE",
+  active: {
+    type: Boolean,
+    default: false,
   },
   company_id: {
     type: Schema.Types.ObjectId,
-    ref:"User"
+    ref: "User"
   }
-});
+}, { timestamps: true });
 
 createEmployeeSchema.methods.generateAuthToken = function () {
-  const token = jwt.sign({ _id: this._id }, process.env.JWTPRIVATEKEY, {
+  const token = jwt.sign({ _id: this._id, role: this.role, active:this.active }, process.env.JWTPRIVATEKEY, {
     expiresIn: "7d",
   });
   return token;
@@ -88,8 +83,6 @@ const validate = (data) => {
   };
 
   const schema = Joi.object({
-    // firstName: Joi.string().required().label("First Name"),
-    // lastName: Joi.string().required().label("Last Name"),
     name: Joi.string().required().label("name"),
     email: Joi.string().email().required().label("Email"),
     password: Joi.string()
@@ -105,12 +98,11 @@ const validate = (data) => {
         }
         return value;
       }),
-      contact: Joi.string().required().label("Contact"),
-      address: Joi.string().required().label("Address"),
-      details: Joi.string().required().label("Details"),
-      role: Joi.string().valid("SALESMAN", "ADMIN", "MANAGER").required().label("Role"),
-      status: Joi.string().valid("ACTIVE", "INACTIVE").required().label("Status"),
-      image: Joi.string().required().label("Image"),
+    contact: Joi.string().required().label("Contact"),
+    address: Joi.string().required().label("Address"),
+    details: Joi.string().required().label("Details"),
+    active: Joi.boolean().required().label("Active"),
+    image: Joi.string().required().label("Image"),
   });
 
   return schema.validate(data);

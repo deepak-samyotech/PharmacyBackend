@@ -148,7 +148,7 @@ exports.put = async (req, res) => {
 //(4.) DELETE : to delete the data on database
 exports.delete = async (req, res) => {
   try {
-    const deletePoliceData = await Police.findByIdAndDelete(req.params.id);
+    const deletePoliceData = await Police.findByIdAndDelete(req.params?.id);
     res.status(200).json({
       message: "Police data deleted successfully!",
       data: deletePoliceData,

@@ -20,14 +20,17 @@ router.post("/", async (req, res) => {
         }
 
         // First, try to find the user in the User collection
-        let user = await User.findOne({ email: req.body.email });
+        let user = await User.findOne({ email: req.body?.email });
         let validPassword = user ? await bcrypt.compare(req.body.password, user.password) : false;
 
         if (!user || !validPassword) {
+            console.log("I am here");
             // If not found or password is invalid, try to find the user in the CreateEmployee collection
-            const createEmployee = await CreateEmployee.findOne({ email: req.body.email });
+            const createEmployee = await CreateEmployee.findOne({ email: req.body?.email });
+            console.log("createEmployee1 ", createEmployee);
             if (createEmployee) {
-                validPassword = await bcrypt.compare(req.body.password, createEmployee.password);
+                console.log("createEmployee2 ", createEmployee);
+                validPassword = await bcrypt.compare(req.body?.password, createEmployee?.password);
                 if (validPassword) {
                     const token1 = createEmployee.generateAuthToken(); // Assuming a method named generateAuthToken exists in the CreateEmployee model
                     return res.status(200).send({ token: token1, message: "Logged in successfully" });

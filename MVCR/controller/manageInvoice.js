@@ -58,10 +58,11 @@ exports.get = async (req, res) => {
     }
     res.status(200).json({
       message: "Manage_Invoice List",
-      data: manage_InvoiceListsanage_InvoiceLists,
+      data: manage_InvoiceLists,
       count: manage_InvoiceLists.length,
     });
   } catch (err) {
+    console.log("Error : ", err);
     res.status(404).json(err);
   }
 };
@@ -118,7 +119,7 @@ exports.getTotalSale = async (req, res) => {
         $lte: new Date(endDate),
       };
     }
-    const manage_InvoiceLists = await Manage_Invoice.find({ company_id: req.user?._id, query });
+    const manage_InvoiceLists = await Manage_Invoice.find({ company_id: req.user?._id, ...query });
 
     if (manage_InvoiceLists && manage_InvoiceLists.length > 0) {
       const data = await Promise.all(
@@ -154,7 +155,7 @@ exports.getTotalSale = async (req, res) => {
 // get invoice by id
 exports.getInvoice = async (req, res) => {
   try {
-    const invoiceId = req.params.id;
+    const invoiceId = req.params?.id;
 
     const invoiceData = await Manage_Invoice.findById(invoiceId);
 

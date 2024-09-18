@@ -127,7 +127,7 @@ exports.put = async (req, res) => {
     console.log("Updated data", updatedData);
 
     const updatedCustomer_ledger = await Customer_ledger.findByIdAndUpdate(
-      req.params.id,
+      req.params?.id,
       updatedData,
       { new: true }
     );
@@ -150,7 +150,7 @@ exports.put = async (req, res) => {
 exports.delete = async (req, res) => {
   try {
     const deleteCustomer_ledgerData = await Customer_ledger.findByIdAndDelete(
-      req.params.id
+      req.params?.id
     );
     res.status(200).json({
       message: "Customer_ledger data deleted successfully!",

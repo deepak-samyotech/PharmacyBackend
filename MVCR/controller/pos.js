@@ -20,6 +20,7 @@ exports.post = async (req, res) => {
         const isValueExist = await PosConfigureData.aggregate([
             {
                 $match: {
+                    company_id:req.user?._id,
                     value: value,
                     active: true
                 }
@@ -98,10 +99,8 @@ exports.get = async (req, res) => {
             active: doc.active
         }));
 
-        console.log(responseData);
 
         const filteredData = responseData.filter((item) => item.active !== false);
-        console.log(filteredData);
 
         return res.status(200)
             .json({
@@ -125,11 +124,12 @@ exports.put = async (req, res) => {
     try {
         const { newValue } = req.body;
 
-        console.log(req.params.id);
+        console.log(req.params?.id);
 
         const isValueExist = await PosConfigureData.aggregate([
             {
                 $match: {
+                    company_id:req.user?._id,
                     value: newValue,
                     active: true
                 }
@@ -146,7 +146,7 @@ exports.put = async (req, res) => {
         }
 
         const newPosData = await PosConfigureData.findByIdAndUpdate(
-            req.params.id,
+            req.params?.id,
             { value: newValue },
             { new: true }
         );
@@ -178,7 +178,7 @@ exports.put = async (req, res) => {
 exports.delete = async (req, res) => {
     try {
 
-        const posData = await PosConfigureData.findById(req.params.id);
+        const posData = await PosConfigureData.findById(req.params?.id);
 
         await Medicine.updateOne(
             { _id: posData.productId },

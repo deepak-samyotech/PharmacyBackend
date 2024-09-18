@@ -53,7 +53,7 @@ exports.get = async (req, res) => {
     }
     res.status(200).json({
       message: "Sale_return List",
-      data: Sale_returnListsanage_InvoiceLists,
+      data: Sale_returnLists,
       count: Sale_returnLists.length,
     });
   } catch (err) {

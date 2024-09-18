@@ -308,7 +308,7 @@ exports.post = async (req, res) => {
       entry_id,
       company_id: req.user?._id,
     });
-    console.log(newPurchase, "harshit++++s");
+  
     newPurchase = await newPurchase.save();
     console.log("newPurchase", newPurchase);
     res.status(200).json({ newPurchase: newPurchase });
@@ -366,7 +366,7 @@ exports.put = async (req, res) => {
     };
 
     const updatedPurchase = await Purchase.findByIdAndUpdate(
-      req.params.id,
+      req.params?.id,
       updatedData,
       { new: true }
     );
@@ -382,7 +382,7 @@ exports.put = async (req, res) => {
 //(4.) DELETE : to delete the data on database
 exports.delete = async (req, res) => {
   try {
-    const deletePurchaseData = await Purchase.findByIdAndDelete(req.params.id);
+    const deletePurchaseData = await Purchase.findByIdAndDelete(req.params?.id);
     res.status(200).json({
       message: "Purchase data deleted successfully!",
       data: deletePurchaseData,

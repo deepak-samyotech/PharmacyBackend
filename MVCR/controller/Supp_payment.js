@@ -165,7 +165,7 @@ exports.put = async (req, res) => {
       updatedData,
       { new: true }
     );
-    console.log("updatedSupp_payment", updatedSupp_payment);
+   
     res.status(200).json({ updatedSupp_payment: updatedSupp_payment });
     if (!updatedSupp_payment) {
       return res.status(404).json({ message: "Supp_payment not found" });
@@ -179,7 +179,7 @@ exports.put = async (req, res) => {
 //(4.) DELETE : to delete the data on database
 exports.delete = async (req, res) => {
   try {
-    const deleteSupp_paymentData = await Supp_payment.findByIdAndDelete(req.params.id);
+    const deleteSupp_paymentData = await Supp_payment.findByIdAndDelete(req.params?.id);
     res.status(200).json({
       message: "Supp_payment data deleted successfully!",
       data: deleteSupp_paymentData,

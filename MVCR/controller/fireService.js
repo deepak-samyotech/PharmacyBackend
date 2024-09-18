@@ -148,7 +148,7 @@ exports.put = async (req, res) => {
 //(4.) DELETE : to delete the data on database
 exports.delete = async (req, res) => {
   try {
-    const deleteFireServiceData = await FireService.findByIdAndDelete(req.params.id);
+    const deleteFireServiceData = await FireService.findByIdAndDelete(req.params?.id);
     res.status(200).json({
       message: "FireService data deleted successfully!",
       data: deleteFireServiceData,

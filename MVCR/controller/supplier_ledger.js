@@ -121,7 +121,7 @@ exports.put = async (req, res) => {
     };
 
     const updatedSupplier_ledger = await Supplier_ledger.findByIdAndUpdate(
-      req.params.id,
+      req.params?.id,
       updatedData,
       { new: true }
     );
@@ -140,7 +140,7 @@ exports.put = async (req, res) => {
 exports.delete = async (req, res) => {
   try {
     const deleteSupplier_ledgerData = await Supplier_ledger.findByIdAndDelete(
-      req.params.id
+      req.params?.id
     );
     res.status(200).json({
       message: "Supplier_ledger data deleted successfully!",

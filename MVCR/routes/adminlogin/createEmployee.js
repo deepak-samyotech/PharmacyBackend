@@ -26,7 +26,9 @@ const generateCustomID = (prefix) => {
 router.get("/", async (req, res) => {
     try {
       // Fetch data from Employee collection
-      const employeeLists = await CreateEmployee.find();
+      const employeeLists = await CreateEmployee.find({ company_id: req.user?._id });
+
+      console.log("employeeLists ", employeeLists);
   
       if (employeeLists && employeeLists.length > 0) {
         // Prepare response data
@@ -59,7 +61,7 @@ router.get("/", async (req, res) => {
   });
 
 
-router.post("/", upload.single('image'), verifyJWT, async (req, res) => {
+router.post("/", upload.single('image'), async (req, res) => {
     try {
         console.log("req.body : ", req.body);
         console.log("req.file : ", req.file);
@@ -72,12 +74,12 @@ router.post("/", upload.single('image'), verifyJWT, async (req, res) => {
 
         // Validate the request body using the Joi schema
         const { error } = validate(req.body);
-        if (error) {
+      if (error) {
             return res.status(400).send({ message: error.details[0].message });
         }
 
         // Check if a user with the given email already exists
-        const existingUser = await CreateEmployee.findOne({ email: req.body.email });
+        const existingUser = await CreateEmployee.findOne({ email: req.body?.email });
         if (existingUser) {
             return res.status(402).json({ message: "Employee with given email already exists" });
         }
@@ -96,16 +98,15 @@ router.post("/", upload.single('image'), verifyJWT, async (req, res) => {
             em_ip: em_ip,
             // firstName: req.body.firstName,
           // lastName: req.body.lastName,
-            name: req.body.name,
-            email: req.body.email,
+            name: req.body?.name,
+            email: req.body?.email,
             password: hashedPassword,
-            contact: req.body.contact,
-            address: req.body.address,
-            details: req.body.details,
-            entrydate: req.body.entrydate || null,
-            role: req.body.role,
-            status: req.body.status,
-            image: req.body.image,
+            contact: req.body?.contact,
+            address: req.body?.address,
+            details: req.body?.details,
+            // role: 'EMPLOYEE',
+            active: req.body?.active,
+            image: req.body?.image,
             company_id: req.user?._id,
         });
 

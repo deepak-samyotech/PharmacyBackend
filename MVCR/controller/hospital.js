@@ -148,7 +148,7 @@ exports.put = async (req, res) => {
 //(4.) DELETE : to delete the data on database
 exports.delete = async (req, res) => {
   try {
-    const deleteHospitalData = await Hospital.findByIdAndDelete(req.params.id);
+    const deleteHospitalData = await Hospital.findByIdAndDelete(req.params?.id);
     res.status(200).json({
       message: "Hospital data deleted successfully!",
       data: deleteHospitalData,

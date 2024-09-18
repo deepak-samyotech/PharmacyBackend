@@ -42,19 +42,28 @@ const salesReturnRouter = require("./MVCR/routes/sale_return");
 const purchaseHistoryRouter = require("./MVCR/routes/purchase_history");
 
 //Bank data
-const bankRouter = require("./MVCR/routes/bank")
+const bankRouter = require("./MVCR/routes/bank");
+const verifyJWT = require("./MVCR/controller/auth/auth.middleware");
 
-// to connect with mongoose
+// Super Admin
+const superAdminRouter = require('./MVCR/routes/superAdmin/superAdmin')
 
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 10000
+    });
+    console.log("Database connected successfully");
+  } catch (error) {
+    console.error("Database connection failed:", error.message);
+  }
+};
+connectDB();
 console.log(process.env.IMAGE_BASE_URL);
-mongoose
-  .connect(process.env.MONGO_URL)
-  .then((res) => {
-    console.log("database connected successfully");
-  })
-  .catch((err) => {
-    console.log("database not connected", err);
-  });
+
 
 //body parser
 server.use(cors());
@@ -82,10 +91,13 @@ server.use("/police", policeRouter.router);
 server.use("/doctor", doctorRouter.router);
 server.use("/ambulance", ambulanceRouter.router);
 //admin auth
-server.use("/register", userRegister);
-server.use("/employee-register", employeeRegister);
+// server.use("/register", verifyJWT, userRegister);
+server.use("/employee-register", verifyJWT,employeeRegister);
 server.use("/login", userLogin);
 server.use("/admin", authRoute);
+
+// superadmin
+server.use('/superadmin', superAdminRouter.router);
 
 
 //return
@@ -100,5 +112,5 @@ server.use("/purchase-history", purchaseHistoryRouter.router)
 server.use("/bank", bankRouter.router)
 
 server.listen(PORT, () => {
-  console.log("server started" + PORT);
+  console.log("server started " + PORT);
 });

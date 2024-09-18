@@ -52,7 +52,7 @@ exports.search = async (req, res) => {
       query.invoice_no = invoice_no;
     }
 
-    const PurchaseHistoryData = await PurchaseHistory.find({ company_id: req.user?._id, query }).select(
+    const PurchaseHistoryData = await PurchaseHistory.find({ company_id: req.user?._id, ...query }).select(
       "supplier_name supplier_id invoice_no date details product_name generic_name form expire_date sale_qty trade_price mrp total_amount barcode"
     );
 
@@ -118,8 +118,7 @@ exports.post = async (req, res) => {
       barcode,
       company_id: req.user?._id,
     });
-    console.log(newPurchaseHistory, "dj++++s");
-    // Save the new Purchase to the database
+    
     newPurchaseHistory = await newPurchaseHistory.save();
     console.log("newPurchaseHistory", newPurchaseHistory);
     res.status(200).json({ newPurchaseHistory: newPurchaseHistory });
@@ -133,7 +132,7 @@ exports.post = async (req, res) => {
 exports.put = async (req, res) => {
   try {
     const updatedPurchaseHistory = await PurchaseHistory.findByIdAndUpdate(
-      req.params.id,
+      req.params?.id,
       req.body,
       { new: true }
     );
@@ -149,7 +148,7 @@ exports.put = async (req, res) => {
 exports.delete = async (req, res) => {
   try {
     const deletePurchaseHistoryData = await PurchaseHistory.findByIdAndDelete(
-      req.params.id
+      req.params?.id
     );
     res.status(200).json({
       message: "PurchaseHistory data deleted successfully!",

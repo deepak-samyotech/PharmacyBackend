@@ -70,7 +70,6 @@ exports.post = async (req, res) => {
       return res.status(400).json({ errors: [{ msg: respUpload.message }] });
     }
 
-    // Validation check
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       await removeUploadImage(respUpload.files);
@@ -80,10 +79,8 @@ exports.post = async (req, res) => {
 
     const r_id = generatePurchaseReturnId();
 
-    // Set entry_date to the current date
     const return_date = new Date().toISOString().split('T')[0];
-
-    // Extract data from the request body
+    
     const {
       id,
       sid,
@@ -94,8 +91,7 @@ exports.post = async (req, res) => {
       total_amount
     } = req.body;
 
-    console.log("req.body", req.body);
-    // Create the new PurchaseReturn
+    
     let newPurchaseReturn = new PurchaseReturn({
       id,
       r_id,
@@ -108,8 +104,8 @@ exports.post = async (req, res) => {
       total_amount,
       company_id: req.user?._id,
     });
-    console.log(newPurchaseReturn, "harshit++++s")
-    // Save the new PurchaseReturn to the database
+    
+   
     newPurchaseReturn = await newPurchaseReturn.save();
     console.log("newPurchaseReturn", newPurchaseReturn);
     res.status(200).json({ newPurchaseReturn: newPurchaseReturn });

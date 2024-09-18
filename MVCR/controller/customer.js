@@ -25,7 +25,7 @@ exports.get = async (req, res) => {
   try {
     const customerLists = await Customer.find({ company_id: req.user?._id });
 
-    if (customerLists && customerLists.length > 0) {
+    if (customerLists && customerLists?.length > 0) {
       let wholesaleCount = 0;
       let regularCount = 0;
 
@@ -265,7 +265,7 @@ exports.put = async (req, res) => {
 //(4.) DELETE : to delete the data on database
 exports.delete = async (req, res) => {
   try {
-    const deleteCustomerData = await Customer.findByIdAndDelete(req.params.id);
+    const deleteCustomerData = await Customer.findByIdAndDelete(req.params?.id);
     res.status(200).json({
       message: "Customer data deleted successfully!",
       data: deleteCustomerData,
@@ -289,8 +289,10 @@ exports.search = async (req, res) => {
       query.cus_contact = cus_contact;
     }
 
-    // const medicines = await Medicine.find(query).select('product_name');
-    const customer = await Customer.find( {company_id:req.user?._id ,query}).select(
+    const customer = await Customer.find({ 
+      company_id: req.user?._id,
+      ...query 
+    }).select(
       "c_id c_name pharmacy_name c_email c_type barcode cus_contact c_address c_note regular_discount target_amount target_discount entry_date"
     );
 
