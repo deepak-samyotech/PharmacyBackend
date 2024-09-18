@@ -44,7 +44,12 @@ const supplierSchema = new Schema({
     company_id: {
         type: Schema.Types.ObjectId,
         ref:"User"
-    }
+    },
+    employee_id:{
+        type: Schema.Types.ObjectId,
+        ref: "CreateEmployee",
+        default: null,
+      }
 }, {timestamps:true});
 
 exports.Supplier = mongoose.model("Supplier", supplierSchema);

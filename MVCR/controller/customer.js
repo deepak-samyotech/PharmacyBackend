@@ -177,6 +177,7 @@ exports.post = async (req, res) => {
           ? respUpload.files[0].filename
           : "",
       company_id: req.user?._id,
+      employee_id: req.user?.emp_id,
     });
     console.log("newCustomer", newCustomer);
     // Save the new customer to the database
@@ -244,6 +245,7 @@ exports.put = async (req, res) => {
         respUpload.files && respUpload.files.length > 0
           ? respUpload.files[0].filename
           : "",
+      employee_id:req.user?.emp_id,
     };
     const updatedCustomer = await Customer.findByIdAndUpdate(
       req.params.id,

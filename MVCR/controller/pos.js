@@ -27,8 +27,6 @@ exports.post = async (req, res) => {
             }
         ])
 
-        console.log("isValueExist : ", isValueExist);
-
         if (isValueExist.length > 0) {
             return res.status(400).json({
                 success: false,

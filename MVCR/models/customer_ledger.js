@@ -24,8 +24,13 @@ const customer_ledgerSchema = new Schema({
     },
     company_id: {
         type: Schema.Types.ObjectId,
-        ref:"User"
-      }
+        ref: "User"
+    },
+    employee_id: {
+        type: Schema.Types.ObjectId,
+        ref: "CreateEmployee",
+        default: null,
+    }
 });
 
 exports.Customer_ledger = mongoose.model('Customer_ledger', customer_ledgerSchema);

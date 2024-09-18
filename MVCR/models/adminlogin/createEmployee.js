@@ -13,14 +13,6 @@ const createEmployeeSchema = new Schema({
     type: String,
     default: null,
   },
-  // firstName: {
-  //   type: String,
-  //   default: null,
-  // },
-  // lastName: {
-  //   type: String,
-  //   default: null,
-  // },
   name: {
     type: String,
     default: null
@@ -63,7 +55,7 @@ const createEmployeeSchema = new Schema({
 }, { timestamps: true });
 
 createEmployeeSchema.methods.generateAuthToken = function () {
-  const token = jwt.sign({ _id: this._id, role: this.role, active:this.active }, process.env.JWTPRIVATEKEY, {
+  const token = jwt.sign({ _id: this.company_id, role: this.role, active:this.active, emp_id:this._id }, process.env.JWTPRIVATEKEY, {
     expiresIn: "7d",
   });
   return token;

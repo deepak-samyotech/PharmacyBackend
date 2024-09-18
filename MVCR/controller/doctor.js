@@ -82,6 +82,7 @@ exports.post = async (req, res) => {
       contact,
       address,
       company_id: req?.user?._id,
+      employee_id: req.user?.emp_id,
     });
 
     // Save the new Doctor to the database

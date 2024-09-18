@@ -122,6 +122,7 @@ exports.post = async (req, res) => {
       grandDeduction,
       totalReturn,
       company_id: req.user?._id,
+      employee_id: req.user?.emp_id,
     });
 
     // Save the new Sale_return to the database

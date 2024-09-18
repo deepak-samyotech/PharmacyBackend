@@ -12,6 +12,7 @@ const verifyJWT = async (req, res, next) => {
         }
 
         const decodedToken = jwt.verify(token, process.env.JWTPRIVATEKEY);
+        // console.log("Decoded token ", decodedToken);
 
         const user = await User.findById(decodedToken?._id).select("-password");
         if (!user) {
@@ -20,7 +21,14 @@ const verifyJWT = async (req, res, next) => {
                 error: "User Not found"
             })
         }
-        req.user = user;
+
+        if (decodedToken?.role === 'ADMIN') {
+            req.user = user;
+        }
+        else {
+            req.user = decodedToken;    
+        }
+
         next();
     } catch (error) {
         console.log("error : ", error);

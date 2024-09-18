@@ -158,6 +158,7 @@ exports.post = async (req, res) => {
       //   updated_by: 'user123',
       // },
       company_id: req.user?._id,
+      employee_id:req.user?.emp_id,
     });
 
     // Save the new supplier to the database
@@ -215,6 +216,7 @@ exports.put = async (req, res) => {
         respUpload.files && respUpload.files.length > 0
           ? respUpload.files[0].filename
           : "",
+      employee_id:req.user?.emp_id,
     };
 
     const updatedSupplier = await Supplier.findByIdAndUpdate(

@@ -88,10 +88,11 @@ exports.get = async (req, res) => {
 exports.getSupplierData = async (req, res) => {
   try {
     const data = req.params.data;
+    
     const suppliers = await Supplier.aggregate([
       {
         $match: {
-          company_id: req.user?._id,
+          company_id: new mongoose.Types.ObjectId(req.user?._id),
         }
       },
       {
@@ -180,7 +181,6 @@ exports.post = async (req, res) => {
     req.body.file_name = "image";
     const respUpload = await uploadSingleFile(req, res);
 
-    console.log("respUpload", respUpload);
     if (respUpload.error !== undefined) {
       return res.status(400).json({ errors: [{ msg: respUpload.message }] });
     }
@@ -221,7 +221,8 @@ exports.post = async (req, res) => {
       sale_qty,
     } = req.body;
 
-    console.log("req.body", req.body);
+    console.log("req user ======? ", req?.user);
+
     // Create the new customer
     let newMedicine = new Medicine({
       id,
@@ -252,8 +253,8 @@ exports.post = async (req, res) => {
           ? respUpload.files[0].filename
           : "",
       company_id: req.user?._id,
+      employee_id: req.user?.emp_id,
     });
-    console.log("newMedicine", newMedicine);
     // Save the new customer to the database
     newMedicine = await newMedicine.save();
     console.log("newMedicine", newMedicine);
@@ -409,6 +410,7 @@ exports.put = async (req, res) => {
         respUpload.files && respUpload.files.length > 0
           ? respUpload.files[0].filename
           : "",
+      employee_id:req.user?.emp_id,
     };
     const updatedMedicine = await Medicine.findByIdAndUpdate(
       req.params.id,

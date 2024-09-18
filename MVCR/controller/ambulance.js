@@ -88,6 +88,7 @@ exports.post = async (req, res) => {
       hospital_name,
       notes,
       company_id: req?.user?._id,
+      employee_id: req.user?.emp_id,
     });
 
     // Save the new Ambulance to the database
