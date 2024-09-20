@@ -153,35 +153,28 @@ exports.put = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
     const {
-      // firstName,
-      // lastName,
       name,
       email,
-      password,
       contact,
       address,
       role,
-      // em_entrydate,
-      status,
+      active,
     } = req.body;
 
     console.log("req.body == ", req.body);
     console.log("req.params == ", req.params.id);
 
     const updatedData = {
-      // firstName,
-      // lastName,
       name,
       email,
-      password,
       contact,
       address,
       role,
-      status,
-      image:
-        respUpload.files && respUpload.files.length > 0
-          ? respUpload.files[0].filename
-          : "",
+      active,
+      // image:
+      //   respUpload.files && respUpload.files.length > 0
+      //     ? respUpload.files[0].filename
+      //     : "",
     };
 
     console.log("UpdatedData  : ", updatedData);

@@ -48,6 +48,9 @@ const verifyJWT = require("./MVCR/controller/auth/auth.middleware");
 // Super Admin
 const superAdminRouter = require('./MVCR/routes/superAdmin/superAdmin')
 
+//user details
+const userRouter = require('./MVCR/routes/user');
+
 
 const connectDB = async () => {
   try {
@@ -99,6 +102,8 @@ server.use("/admin", authRoute);
 // superadmin
 server.use('/superadmin', superAdminRouter.router);
 
+//user details
+server.use('/userdetails', userRouter.router);
 
 //return
 server.use("/purchase_return", purchaseReturnRouter);

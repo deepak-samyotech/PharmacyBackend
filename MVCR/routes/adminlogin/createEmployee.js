@@ -35,14 +35,13 @@ router.get("/", async (req, res) => {
         const data = employeeLists.map((item) => ({
           id:item._id,
           em_id: item.em_id,
-          // firstName: item.firstName,
-          // lastName: item.lastName,
           name: item.name,
           email: item.email,
           contact: item.contact,
           role: item.role,
           address: item.address,
-          status: item.status
+          active: item.active,
+          image: item.image,
         }));
   
         res.status(200).json({
