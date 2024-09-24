@@ -10,6 +10,7 @@ const {
   uploadSingleFile,
   removeUploadImage,
 } = require("../../utils/upload.js");
+const { Medicine } = require("../models/medicine.js");
 
 // Function to generate custom employment ID
 const generatePurchaseReturnId = () => {
@@ -23,21 +24,31 @@ const generatePurchaseReturnId = () => {
 exports.get = async (req, res) => {
   try {
     // Fetch data from PurchaseReturn collection
-    const PurchaseReturnLists = await PurchaseReturn.find({ company_id: req.user?._id });
+    const PurchaseReturnLists = await PurchaseReturn.find({
+      company_id: req.user?._id
+    }).populate({
+      path: 'medicineData.medicine_id',
+      model: 'Medicine',
+      select: 'supplier_name'
+    });;
+
+    console.log("PurchaseReturnLists", PurchaseReturnLists);
 
     if (PurchaseReturnLists && PurchaseReturnLists.length > 0) {
       // Prepare response data
       const data = PurchaseReturnLists.map((item) => ({
-        id: item.id,
-        sid: item.sid,
-        supplier_name: item.supplier_name,
-        r_id: item.r_id,
-        pur_id: item.pur_id,
+        id: item._id,
+        // sid: item.sid,
+        supplier_name: item?.medicineData[0].medicine_id.supplier_name,
+
+        // pur_id: item.pur_id,
         invoice_no: item.invoice_no,
-        return_date: item.return_date,
-        total_deduction: item.total_deduction,
-        total_amount: item.total_amount,
+        return_date: new Date(item.date).toISOString().split('T')[0],
+        // total_deduction: item.total_deduction,
+        total_amount: item.grand_total,
       }));
+
+      console.log("data", data);
 
       res.status(200).json({
         msg: "PurchaseReturn data",
@@ -80,33 +91,29 @@ exports.post = async (req, res) => {
     const r_id = generatePurchaseReturnId();
 
     const return_date = new Date().toISOString().split('T')[0];
-    
+    console.log("req body", req.body);
     const {
-      id,
-      sid,
-      supplier_name,
       invoice_no,
-      pur_id,
-      total_deduction,
-      total_amount
+      date,
+      details,
+      grand_total,
+      medicineData,
     } = req.body;
 
-    
+
     let newPurchaseReturn = new PurchaseReturn({
-      id,
       r_id,
-      sid,
-      supplier_name,
       invoice_no,
-      pur_id,
-      return_date,
-      total_deduction,
-      total_amount,
+      date,
+      details,
+      grand_total,
+      medicineData,
       company_id: req.user?._id,
     });
-    
-   
+
+
     newPurchaseReturn = await newPurchaseReturn.save();
+    await updateStockQuantityAfterReturn(medicineData, res);
     console.log("newPurchaseReturn", newPurchaseReturn);
     res.status(200).json({ newPurchaseReturn: newPurchaseReturn });
   } catch (err) {
@@ -184,3 +191,54 @@ exports.delete = async (req, res) => {
     });
   }
 };
+
+
+async function updateStockQuantityAfterReturn(medicineData,res) {
+  try {
+
+    if (!medicineData) {
+      return res.status(400).json({
+        success: false,
+        error: "Atleast one Quantity needed to update stock Quantity"
+      })
+    }
+
+
+
+    const values = medicineData.map(async (element) => {
+      try {
+        const curr_medicine = await Medicine.findById(element?.medicine_id);
+
+        if (!curr_medicine) {
+          throw new Error(`Medicine with id ${element?.medicine_id} not found`);
+        }
+
+        const newInstockQuantity = parseInt(curr_medicine?.instock) - parseInt(element?.return_qty);
+
+        console.log("newInstockQuantity", newInstockQuantity);
+
+        return await Medicine.updateOne(
+          { _id: element?.medicine_id },
+          {
+            $set: {
+              instock: newInstockQuantity,
+            },
+          }
+        );
+      } catch (error) {
+        console.error(`Failed to update medicine with id ${element?.medicine_id}:`, error);
+      }
+    });
+
+    await Promise.all(values);
+
+    return;
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      error: "Internal server error"
+    })
+  }
+}

@@ -288,9 +288,9 @@ exports.post = async (req, res) => {
       invoice_no,
       pur_date,
       pur_details,
-      total_discount,
+      // total_discount,
       gtotal_amount,
-      entry_id,
+      // entry_id,
     } = req.body;
 
     console.log("req.body", req.body);
@@ -302,10 +302,10 @@ exports.post = async (req, res) => {
       invoice_no,
       pur_date,
       pur_details,
-      total_discount,
+      // total_discount,
       gtotal_amount,
       entry_date,
-      entry_id,
+      // entry_id,
       company_id: req.user?._id,
     });
   

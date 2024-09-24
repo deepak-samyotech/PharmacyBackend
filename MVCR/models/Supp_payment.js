@@ -12,7 +12,9 @@ const supp_paymentSchema = new Schema({
         default: null,
     },
     type: {
+        type:String,
         enum: ["Cash", "Cheque", "Credit"],
+        default:"Cash"
     },
     bank_id: {
         type: String,
