@@ -74,6 +74,12 @@ server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
 server.use(express.static("public"));
 // server.use("/employee", employeeRouter.router);
+
+// base url
+server.get('/', (req, res) => {
+  res.send("Welcome to Pharma CRM");
+})
+
 server.use("/medicine", medicineRouter.router);
 server.use("/customer", customerRouter.router);
 server.use("/supplier", supplierRouter.router);
